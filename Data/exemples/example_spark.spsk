@@ -1,0 +1,53 @@
+{
+  "@context": "https://sparkprotocol.io/context/spsk-v2.jsonld",
+  "@id": "spark:site:example-media.com",
+  "@type": "SparkSiteKey",
+  "name": "example-media.com",
+  "spark_protocol_version": "2.0",
+  "publisher": {
+    "name": "example-media.com",
+    "url": "https://example-media.com/about",
+    "id": "spark:org:example-mediacom",
+    "contact": "spark@example-media.com"
+  },
+  "public_keys": [
+    {
+      "id": "spark:key:example-media.com:primary-2026",
+      "type": "Ed25519VerificationKey2020",
+      "publicKeyMultibase": "zne7TDQNK3Q3p4GwLKESVpSDJEh4FnbRQeGTKqZiDYW3",
+      "status": "active"
+    }
+  ],
+  "default_depth_spark": 1,
+  "max_depth_spark": 3,
+  "entry_points": {
+    "content": {
+      "url": "https://example-media.com/spark/index.spk",
+      "description": "Content knowledge graph index",
+      "type": "spk_index",
+      "access_level": "public"
+    },
+    "actions": {
+      "url": "https://example-media.com/spark/actions.spki",
+      "description": "Available agent action interfaces",
+      "type": "spki_interface",
+      "access_level": "public"
+    }
+  },
+  "compliance_required": "level_2",
+  "honeypot_enabled": true,
+  "vault_endpoint": "https://vault.example-media.com/spark/v2",
+  "token_bank_endpoint": "https://tokenbank.sparkprotocol.io/v2",
+  "deployment_mode": "open",
+  "rate_limits": {
+    "requests_per_minute_per_agent": 60,
+    "burst": 15,
+    "requests_per_day_per_agent": 10000
+  },
+  "supported_usage": [
+    "display",
+    "rag"
+  ],
+  "last_updated": "2026-05-03T12:18:50Z",
+  "ttl": 3600
+}

@@ -1,0 +1,271 @@
+{
+  "@context": [
+    "https://schema.org/",
+    "https://sparkprotocol.io/context/spk-v2.jsonld"
+  ],
+  "@id": "spark:article:example-media.com/the-rise-of-agent-native-web-protocols",
+  "@type": "Article",
+  "headline": "The Rise of Agent-Native Web Protocols",
+  "author": {
+    "@type": "Person",
+    "name": "Sophie Chen"
+  },
+  "publisher": {
+    "@id": "spark:org:example-mediacom",
+    "name": "example-media.com"
+  },
+  "datePublished": "2026-04-15",
+  "dateModified": "2026-05-03T12:18:50Z",
+  "version": "v1.0",
+  "license": "proprietary",
+  "language": "en",
+  "keywords": [
+    "AI protocols",
+    "agent economy",
+    "semantic web",
+    "SparkLayer"
+  ],
+  "depth_layers": {
+    "0": {
+      "access": "public",
+      "token_cost": 0,
+      "usage": [
+        "display"
+      ],
+      "content": {
+        "summary": "How the shift to autonomous AI agents is forcing a rethink of web infrastructure from the ground up.",
+        "entities": []
+      }
+    },
+    "1": {
+      "access": "public",
+      "token_cost": 0,
+      "usage": [
+        "display",
+        "rag"
+      ],
+      "content": {
+        "sections": [
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "The web was built for human eyes. Every layer — HTML, CSS, JavaScript — assumes a visual renderer\nand a human interpreter at the end of the pipe. That assumption is now breaking.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "The Problem with HTML for Agents",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Fact",
+            "text": "Studies conducted in early 2026 showed that agents processing HTML pages consumed between 40-60%\nof their token budget on structural noise unrelated to content. JavaScript bundles, CSS class names,\nnavigation menus, advertising markup, cookie banners — all of this is invisible overhead for a\nmachine trying to extract knowledge.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Fact",
+            "text": "The average web page contains 2-4MB of JavaScript. Approximately 47% of HTML tokens are\nstructural noise according to the Agent Efficiency Study published in Q1 2026. This is not a\nmarginal inefficiency — it is a fundamental mismatch between the medium and its new primary consumer.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "What Agents Actually Need",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "An autonomous agent does not need a visual layout. It needs:",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Opinion",
+            "text": "Semantic precision: What type of information is this? Fact, opinion, statistic, instruction?",
+            "trainable": false
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "Provenance: Where did this come from? When was it verified? Who authored it?",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "Action surfaces: What can I do here? Buy, subscribe, search, report an error?",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "Economic clarity: What does access to this information cost?",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "None of these requirements are met by HTML. Schema.org annotations help at the margins, but\nthey are optional, inconsistently implemented, and provide no access control or economic primitives.",
+            "trainable": true
+          }
+        ],
+        "entities": []
+      }
+    },
+    "2": {
+      "access": "token_required",
+      "token_cost": 15,
+      "usage": [
+        "display",
+        "rag",
+        "train"
+      ],
+      "content": {
+        "sections": [
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "Three Approaches Emerging in 2026",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "The field has converged on three competing approaches to this problem.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "llms.txt(minimal friction, zero enforcement): A plain text file listing what an LLM is\nallowed to do with site content. Trivially ignorable. Adopted because it requires zero infrastructure.\nEstimated adoption: 12,000 sites by April 2026.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "OpenAPI extensions(moderate friction, partial enforcement): Extending existing OpenAPI\nspecifications with AI-specific fields. Familiar tooling for developers. Does not address content\nstructure or economic primitives. Strong for action surfaces, weak for knowledge representation.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "File-based protocols(higher friction, strong enforcement): Generating parallel structured\nfiles alongside HTML. Requires infrastructure but enables cryptographic verification,\nvault-gated access, and token-based economic exchange. SparkLayer is the most complete\nproposal in this category.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "The Economic Argument",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Fact",
+            "text": "The case for structured protocols is not primarily technical — it is economic. AI companies\ncurrently train models on web content without compensating publishers. The zero-click economy\nhas already destroyed 30-40% of organic search traffic for many publishers.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Fact",
+            "text": "A protocol with integrated payment primitives creates a new revenue channel. An agent accessing\npremium content through a vault pays a token cost per depth level. The publisher receives 85%\nof that transaction. SparkLayer Inc. takes 15% as a clearing fee — the Stripe model applied\nto knowledge access.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Fact",
+            "text": "For a mid-sized publisher generating 10M agent accesses per month at an average of 5 tokens\nper access (€0.05), that is €500,000 in annual revenue from previously unmonetized consumption.",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "Technical Performance Gains",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Context",
+            "text": "Beyond economics, structured protocols offer measurable performance improvements:",
+            "trainable": true
+          },
+          {
+            "@type": "spark:Section",
+            "spark:sectionType": "Fact",
+            "text": "A reduction of 73% in agent preprocessing steps when consuming structured files versus raw HTML\nwas measured in controlled benchmarks. Intent resolution — the process of an agent figuring out\nwhat a button or link does — drops from 3-8 additional LLM calls to zero when action surfaces\ncarry explicit intent annotations.",
+            "trainable": true
+          }
+        ],
+        "statistics": [
+          {
+            "@type": "spark:Statistic",
+            "value": "60",
+            "description": "Studies conducted in early 2026 showed that agents processing HTML pages consumed between 40-60%\nof their token budget on structural noise unrelated to content. JavaScript bundles, CSS class names,\nna",
+            "confidence": 0.7
+          },
+          {
+            "@type": "spark:Statistic",
+            "value": "47",
+            "description": "The average web page contains 2-4MB of JavaScript. Approximately 47% of HTML tokens are\nstructural noise according to the Agent Efficiency Study published in Q1 2026. This is not a\nmarginal inefficien",
+            "confidence": 0.7
+          },
+          {
+            "@type": "spark:Statistic",
+            "value": "40",
+            "description": "The case for structured protocols is not primarily technical — it is economic. AI companies\ncurrently train models on web content without compensating publishers. The zero-click economy\nhas already de",
+            "confidence": 0.7
+          },
+          {
+            "@type": "spark:Statistic",
+            "value": "85",
+            "description": "A protocol with integrated payment primitives creates a new revenue channel. An agent accessing\npremium content through a vault pays a token cost per depth level. The publisher receives 85%\nof that tr",
+            "confidence": 0.7
+          },
+          {
+            "@type": "spark:Statistic",
+            "value": "73",
+            "description": "A reduction of 73% in agent preprocessing steps when consuming structured files versus raw HTML\nwas measured in controlled benchmarks. Intent resolution — the process of an agent figuring out\nwhat a b",
+            "confidence": 0.7
+          },
+          {
+            "@type": "spark:Statistic",
+            "value": "60",
+            "description": "The compound effect across a large-scale crawling operation is significant. An AI company\nprocessing 1 billion web pages per month saves approximately 40-60% of preprocessing compute\nby preferring Spa",
+            "confidence": 0.7
+          }
+        ]
+      }
+    },
+    "3": {
+      "access": "vault_required",
+      "token_cost": 80,
+      "usage": [
+        "train",
+        "finetune"
+      ],
+      "vault_ref": "vault://example-media.com/spark/vault/the-rise-of-agent-native-web-protocols",
+      "content_descriptor": {
+        "@type": "spark:Document",
+        "format": "JSON"
+      }
+    }
+  },
+  "provenance": {
+    "origin": "https://example-media.com/the-rise-of-agent-native-web-protocols",
+    "created_by": "spark:agent:sparkifier-v0.1",
+    "editorial_review": false,
+    "fact_checked": false,
+    "last_verified": "2026-05-03T12:18:50Z",
+    "abysse_data": false
+  },
+  "integrity": {
+    "hash_algorithm": "SHA-256",
+    "content_hash": "95f539fef2e50e5ea717becc8434acecce3d0f47b0f56d58f267bd0913dc28e9",
+    "signature": "8LenmYm1JT4PCAWYK7w_WKm38bop1Kr8z33XAYSQrRluJ9BxpB0vQqHmpAkdVlhJIh75sFjgIUaOHTabpHTZAQ",
+    "signing_key": "spark:key:example-media.com:primary-2026",
+    "signed_at": "2026-05-03T12:18:50Z"
+  }
+}

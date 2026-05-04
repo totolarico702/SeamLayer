@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SparkLayer — The Protocol for the AI-First Web</title>
+<meta name="description" content="SparkLayer is an open protocol that structures, secures, and monetizes web content for autonomous AI agents. Publishers regain control. Agents get clean data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:      #0A0F1E;
+  --ink-soft: #3D4A6B;
+  --bg:       #F6F4EF;
+  --bg-warm:  #EDEAE3;
+  --spark:    #1B4FD8;
+  --spark-lt: #3D6FFF;
+  --gold:     #C9952A;
+  --gold-lt:  #F5C96A;
+  --white:    #FAFAF8;
+  --border:   rgba(10,15,30,0.12);
+  --mono:     'DM Mono', monospace;
+  --serif:    'DM Serif Display', serif;
+  --sans:     'Instrument Sans', sans-serif;
+  --r:        6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── NAV ────────────────────────────────────── */
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 64px;
+  background: rgba(246,244,239,0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 15px; font-weight: 500;
+  color: var(--spark); letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--gold); }
+
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 14px; color: var(--ink-soft);
+  text-decoration: none; font-weight: 500;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--spark); }
+
+.nav-cta {
+  display: flex; gap: 12px; align-items: center;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 20px; border-radius: var(--r);
+  font-size: 14px; font-weight: 600;
+  text-decoration: none; cursor: pointer;
+  transition: all .2s; border: none;
+  font-family: var(--sans);
+}
+
+.btn-ghost {
+  background: transparent; color: var(--ink-soft);
+  border: 1.5px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--spark); color: var(--spark); }
+
+.btn-primary {
+  background: var(--spark); color: white;
+}
+.btn-primary:hover { background: var(--spark-lt); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,79,216,0.3); }
+
+/* ── HERO ───────────────────────────────────── */
+
+.hero {
+  min-height: 100vh;
+  display: grid; place-items: center;
+  padding: 128px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(27,79,216,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27,79,216,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 100%);
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(27,79,216,0.12), transparent 70%);
+  top: 10%; left: 5%;
+  animation: drift 20s ease-in-out infinite;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201,149,42,0.10), transparent 70%);
+  top: 30%; right: 0%;
+  animation: drift 28s ease-in-out infinite reverse;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+}
+
+.hero-inner {
+  max-width: 900px;
+  text-align: center;
+  position: relative; z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 99px;
+  background: rgba(27,79,216,0.08);
+  border: 1px solid rgba(27,79,216,0.2);
+  font-family: var(--mono); font-size: 12px;
+  color: var(--spark); letter-spacing: 0.05em;
+  margin-bottom: 32px;
+}
+
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--spark-lt);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 88px);
+  line-height: 1.0;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+}
+
+h1 em {
+  font-style: italic; color: var(--spark);
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2.2vw, 21px);
+  color: var(--ink-soft);
+  max-width: 620px; margin: 0 auto 48px;
+  line-height: 1.55;
+}
+
+.hero-actions {
+  display: flex; gap: 16px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 72px;
+}
+
+.btn-lg {
+  padding: 14px 28px; font-size: 16px;
+}
+
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; max-width: 640px; margin: 0 auto;
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; background: var(--border);
+}
+
+.stat {
+  background: var(--white);
+  padding: 24px 20px; text-align: center;
+}
+
+.stat-number {
+  font-family: var(--serif);
+  font-size: 36px; line-height: 1;
+  color: var(--spark); margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 12px; color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* ── PROBLEM ─────────────────────────────────── */
+
+.section {
+  padding: 100px 48px;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--gold); letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.1; letter-spacing: -0.02em;
+  color: var(--ink); margin-bottom: 24px;
+}
+
+.section-sub {
+  font-size: 18px; color: var(--ink-soft);
+  max-width: 580px; line-height: 1.6;
+  margin-bottom: 64px;
+}
+
+/* Problem split */
+.problem-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2px; border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  background: var(--border);
+}
+
+.problem-side {
+  background: var(--white); padding: 48px 40px;
+}
+
+.problem-side.dark {
+  background: var(--ink); color: white;
+}
+
+.problem-eyebrow {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 20px; opacity: 0.5;
+}
+
+.problem-side.dark .problem-eyebrow { color: white; }
+
+.problem-heading {
+  font-family: var(--serif); font-size: 28px;
+  margin-bottom: 24px; line-height: 1.2;
+}
+
+.problem-side.dark .problem-heading { color: var(--gold-lt); }
+
+.problem-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+
+.problem-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 15px; line-height: 1.5; color: var(--ink-soft);
+}
+
+.problem-side.dark .problem-item { color: rgba(255,255,255,0.65); }
+
+.problem-icon {
+  flex-shrink: 0; width: 22px; height: 22px;
+  border-radius: 50%; display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; margin-top: 1px;
+}
+
+.icon-bad { background: rgba(220,38,38,0.1); color: #DC2626; }
+.icon-good { background: rgba(27,79,216,0.1); color: var(--spark); }
+
+/* ── HOW IT WORKS ────────────────────────────── */
+
+.how-bg {
+  background: var(--ink);
+  padding: 100px 48px;
+  position: relative; overflow: hidden;
+}
+
+.how-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.how-inner {
+  max-width: 1200px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+.how-bg .section-label { color: var(--gold-lt); }
+.how-bg .section-title { color: var(--white); }
+.how-bg .section-sub { color: rgba(255,255,255,0.55); }
+
+.files-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.file-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 32px 28px;
+  transition: all .3s;
+  position: relative; overflow: hidden;
+}
+
+.file-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--spark), var(--gold));
+  opacity: 0; transition: opacity .3s;
+}
+
+.file-card:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-4px); }
+.file-card:hover::before { opacity: 1; }
+
+.file-name {
+  font-family: var(--mono); font-size: 20px;
+  color: var(--gold-lt); margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.file-tagline {
+  font-size: 13px; color: rgba(255,255,255,0.4);
+  font-family: var(--mono); margin-bottom: 20px;
+  letter-spacing: 0.03em;
+}
+
+.file-desc {
+  font-size: 15px; color: rgba(255,255,255,0.65);
+  line-height: 1.6; margin-bottom: 24px;
+}
+
+.file-fields { display: flex; flex-direction: column; gap: 8px; }
+
+.field {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px;
+}
+
+.field-key { color: var(--spark-lt); }
+.field-val { color: rgba(255,255,255,0.45); }
+
+/* Protocol flow */
+.flow-diagram {
+  margin-top: 72px;
+  display: flex; align-items: center; gap: 0;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; overflow: hidden;
+}
+
+.flow-step {
+  flex: 1; padding: 32px 24px; text-align: center;
+  position: relative;
+}
+
+.flow-step:not(:last-child)::after {
+  content: '→';
+  position: absolute; right: -12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--spark-lt); font-size: 20px; z-index: 1;
+}
+
+.flow-num {
+  display: inline-block;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(27,79,216,0.25);
+  border: 1px solid rgba(61,111,255,0.4);
+  color: var(--spark-lt);
+  font-family: var(--mono); font-size: 13px;
+  display: grid; place-items: center;
+  margin: 0 auto 12px;
+}
+
+.flow-name {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--gold-lt); margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.flow-detail {
+  font-size: 12px; color: rgba(255,255,255,0.4);
+  line-height: 1.4;
+}
+
+/* ── METRICS ─────────────────────────────────── */
+
+.metrics-section {
+  background: var(--bg-warm);
+  padding: 100px 48px;
+}
+
+.metrics-inner { max-width: 1200px; margin: 0 auto; }
+
+.metrics-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.metric-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 36px 32px;
+  display: flex; gap: 24px; align-items: flex-start;
+  transition: box-shadow .2s;
+}
+
+.metric-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+
+.metric-icon {
+  flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: 10px;
+  background: rgba(27,79,216,0.08);
+  display: grid; place-items: center;
+  font-size: 22px;
+}
+
+.metric-body {}
+
+.metric-value {
+  font-family: var(--serif); font-size: 40px;
+  color: var(--spark); line-height: 1; margin-bottom: 4px;
+}
+
+.metric-label {
+  font-size: 16px; font-weight: 600;
+  color: var(--ink); margin-bottom: 8px;
+}
+
+.metric-desc {
+  font-size: 14px; color: var(--ink-soft); line-height: 1.5;
+}
+
+/* ── USE CASES ───────────────────────────────── */
+
+.usecases-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 48px;
+}
+
+.usecase-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px 28px;
+  transition: all .25s;
+}
+
+.usecase-card:hover {
+  border-color: var(--spark);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(27,79,216,0.1);
+}
+
+.usecase-emoji { font-size: 32px; margin-bottom: 16px; }
+
+.usecase-title {
+  font-family: var(--serif); font-size: 20px;
+  color: var(--ink); margin-bottom: 12px;
+}
+
+.usecase-desc {
+  font-size: 14px; color: var(--ink-soft); line-height: 1.6;
+}
+
+/* ── EU SECTION ──────────────────────────────── */
+
+.eu-section {
+  background: linear-gradient(135deg, #0A1628 0%, #1B3A6B 100%);
+  padding: 100px 48px;
+  position: relative; overflow: hidden;
+}
+
+.eu-section::before {
+  content: '★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★';
+  position: absolute; top: 32px; left: 0; right: 0;
+  text-align: center; font-size: 18px; letter-spacing: 12px;
+  color: rgba(245,201,106,0.3);
+}
+
+.eu-inner { max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+
+.eu-inner .section-label { color: var(--gold-lt); }
+.eu-inner .section-title { color: white; }
+.eu-inner .section-sub { color: rgba(255,255,255,0.6); max-width: 600px; margin: 0 auto 48px; }
+
+.articles-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-bottom: 48px;
+}
+
+.article-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px; padding: 24px 20px; text-align: left;
+}
+
+.article-ref {
+  font-family: var(--mono); font-size: 13px;
+  color: var(--gold-lt); margin-bottom: 8px;
+}
+
+.article-title {
+  font-size: 14px; color: white;
+  font-weight: 600; margin-bottom: 8px;
+}
+
+.article-desc {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+
+.article-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px;
+  font-family: var(--mono); font-size: 11px;
+  color: #4ADE80; letter-spacing: 0.05em;
+}
+
+.article-status::before {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%; background: #4ADE80;
+}
+
+/* ── CODE SECTION ────────────────────────────── */
+
+.code-section {
+  background: var(--ink);
+  padding: 100px 48px;
+}
+
+.code-inner { max-width: 1100px; margin: 0 auto; }
+.code-inner .section-title { color: white; }
+.code-inner .section-label { color: var(--gold-lt); }
+.code-inner .section-sub { color: rgba(255,255,255,0.5); }
+
+.code-tabs {
+  display: flex; gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 0;
+}
+
+.tab {
+  padding: 12px 24px;
+  font-family: var(--mono); font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer; transition: all .2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tab.active {
+  color: var(--gold-lt);
+  border-bottom-color: var(--gold);
+}
+
+.code-block {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 32px;
+  font-family: var(--mono); font-size: 13px;
+  line-height: 1.7; overflow-x: auto;
+}
+
+.code-panel { display: none; }
+.code-panel.active { display: block; }
+
+.c-key   { color: #79B8FF; }
+.c-str   { color: #9ECE6A; }
+.c-val   { color: #E5C07B; }
+.c-cmt   { color: #5C6370; font-style: italic; }
+.c-spark { color: #61AFEF; }
+.c-punct { color: rgba(255,255,255,0.3); }
+
+/* ── CTA ─────────────────────────────────────── */
+
+.cta-section {
+  padding: 120px 48px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(27,79,216,0.06), transparent);
+}
+
+.cta-section .section-title { font-size: clamp(36px, 5vw, 64px); }
+
+.cta-section .section-sub { max-width: 540px; margin: 0 auto 48px; }
+
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+.btn-outline {
+  background: transparent; color: var(--spark);
+  border: 2px solid var(--spark);
+}
+.btn-outline:hover { background: var(--spark); color: white; }
+
+.btn-gold {
+  background: var(--gold); color: var(--ink);
+}
+.btn-gold:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+/* ── FOOTER ──────────────────────────────────── */
+
+footer {
+  background: var(--ink); color: rgba(255,255,255,0.4);
+  padding: 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px;
+}
+
+.footer-logo {
+  font-family: var(--mono); font-size: 16px;
+  color: rgba(255,255,255,0.7);
+}
+
+.footer-logo span { color: var(--gold-lt); }
+
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: white; }
+
+/* ── RESPONSIVE ──────────────────────────────── */
+
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 24px 60px; }
+  .hero-stats { grid-template-columns: 1fr 1fr 1fr; }
+  .section { padding: 72px 24px; }
+  .problem-split { grid-template-columns: 1fr; }
+  .how-bg, .metrics-section, .eu-section, .code-section, .cta-section { padding: 72px 24px; }
+  .files-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .usecases-grid { grid-template-columns: 1fr; }
+  .articles-grid { grid-template-columns: 1fr; }
+  .flow-diagram { flex-direction: column; }
+  .flow-step:not(:last-child)::after { content: '↓'; right: auto; top: auto; bottom: -16px; left: 50%; }
+  footer { flex-direction: column; gap: 24px; text-align: center; }
+}
+
+/* ── ANIMATIONS ──────────────────────────────── */
+
+.fade-in {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://github.com/totalarico702/SparkLayer" target="_blank" class="nav-logo">.spark<span>layer</span></a>
+  <ul class="nav-links">
+    <li><a href="#how">Protocol</a></li>
+    <li><a href="#metrics">Performance</a></li>
+    <li><a href="#eu">AI Act</a></li>
+    <li><a href="#code">Developers</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="https://github.com/totalarico702/SparkLayer/blob/main/Docs/WhitePaper/sparklayer_whitepaper_v2.md" target="_blank" class="btn btn-ghost">Read Whitepaper</a>
+    <a href="#code" class="btn btn-primary">Get Started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-inner fade-in visible">
+    <div class="hero-badge">Open Protocol · v2.0 · MIT License</div>
+    <h1>The Web<br><em>Agents Can Read</em></h1>
+    <p class="hero-sub">SparkLayer is an open protocol that structures, secures, and monetizes web content for autonomous AI agents — while giving publishers cryptographic control over how their knowledge is used.</p>
+    <div class="hero-actions">
+      <a href="#how" class="btn btn-primary btn-lg">Explore the Protocol</a>
+      <a href="https://github.com/totalarico702/SparkLayer" target="_blank" class="btn btn-ghost btn-lg">⬡ GitHub</a>
+      <a href="#eu" class="btn btn-ghost btn-lg">🇪🇺 EU AI Act</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">35×</div>
+        <div class="stat-label">Faster Processing</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0</div>
+        <div class="stat-label">LLM Calls to Parse</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Cryptographic Provenance</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<div class="section fade-in">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">HTML was built for eyes.<br>Not for agents.</h2>
+  <p class="section-sub">The web as it exists today forces AI agents to do absurd amounts of work just to read content — and gives publishers nothing in return.</p>
+
+  <div class="problem-split">
+    <div class="problem-side dark">
+      <div class="problem-eyebrow">Today — HTML Scraping</div>
+      <div class="problem-heading">Publishers lose.<br>Agents waste compute.</div>
+      <ul class="problem-list">
+        <li class="problem-item">
+          <span class="problem-icon icon-bad">✕</span>
+          59% of HTML tokens are structural noise: scripts, nav, ads, cookie banners
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-bad">✕</span>
+          4 separate LLM calls needed to classify, extract entities, infer metadata, and resolve action intents
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-bad">✕</span>
+          No provenance — agents cannot verify content authenticity or attribution
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-bad">✕</span>
+          Publishers receive zero compensation for AI consumption of their work
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-bad">✕</span>
+          72% hallucination risk from ambiguous, unclassified source data
+        </li>
+      </ul>
+    </div>
+    <div class="problem-side">
+      <div class="problem-eyebrow">With SparkLayer — .spk Protocol</div>
+      <div class="problem-heading">Publishers control.<br>Agents get clean data.</div>
+      <ul class="problem-list">
+        <li class="problem-item">
+          <span class="problem-icon icon-good">✓</span>
+          Content pre-classified at source: Fact, Opinion, Statistic, Code — zero inference needed
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-good">✓</span>
+          0 LLM calls to parse content: schema-directed reading replaces all inference steps
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-good">✓</span>
+          Ed25519 cryptographic signature on every document — tamper-proof provenance
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-good">✓</span>
+          Token-based micropayments per depth level — publishers monetize AI consumption
+        </li>
+        <li class="problem-item">
+          <span class="problem-icon icon-good">✓</span>
+          18% hallucination risk — publisher-classified, signed, versioned content
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-bg" id="how">
+  <div class="how-inner">
+    <div class="section-label">The Protocol</div>
+    <h2 class="section-title" style="color:white">Three files.<br>One protocol.</h2>
+    <p class="section-sub">SparkLayer defines a parallel layer to the human web — three file formats that together give AI agents everything they need to discover, verify, consume, and pay for structured knowledge.</p>
+
+    <div class="files-grid fade-in">
+      <div class="file-card">
+        <div class="file-name">.spsk</div>
+        <div class="file-tagline">Spark Protocol Site Key</div>
+        <div class="file-desc">The public entry point. Served at <code style="color:var(--gold-lt);font-family:var(--mono);font-size:12px">/.well-known/spark.spsk</code>. Contains publisher identity, Ed25519 public keys, and pointers to content resources.</div>
+        <div class="file-fields">
+          <div class="field"><span class="field-key">publisher</span><span class="field-val">identity + contact</span></div>
+          <div class="field"><span class="field-key">public_keys</span><span class="field-val">Ed25519 verification</span></div>
+          <div class="field"><span class="field-key">entry_points</span><span class="field-val">content index URLs</span></div>
+          <div class="field"><span class="field-key">compliance_required</span><span class="field-val">level_0 → level_3</span></div>
+        </div>
+      </div>
+
+      <div class="file-card">
+        <div class="file-name">.spk</div>
+        <div class="file-tagline">Spark Protocol Knowledge</div>
+        <div class="file-desc">The signed knowledge document. Depth-partitioned content graph with provenance metadata, usage rights, and cryptographic integrity proof. One file per content resource.</div>
+        <div class="file-fields">
+          <div class="field"><span class="field-key">depth_layers</span><span class="field-val">0→N with access rules</span></div>
+          <div class="field"><span class="field-key">spark:sectionType</span><span class="field-val">Fact / Opinion / Code…</span></div>
+          <div class="field"><span class="field-key">usage</span><span class="field-val">train / finetune / rag</span></div>
+          <div class="field"><span class="field-key">integrity.signature</span><span class="field-val">Ed25519 signed</span></div>
+        </div>
+      </div>
+
+      <div class="file-card">
+        <div class="file-name">.spki</div>
+        <div class="file-tagline">Spark Protocol Knowledge Interface</div>
+        <div class="file-desc">The action surface. Declares what autonomous agents can do — search, purchase, subscribe, report — with explicit intents, costs, and compliance requirements. Zero DOM inference.</div>
+        <div class="file-fields">
+          <div class="field"><span class="field-key">intent_category</span><span class="field-val">query / transaction…</span></div>
+          <div class="field"><span class="field-key">cost_per_invocation</span><span class="field-val">in SparkTokens</span></div>
+          <div class="field"><span class="field-key">flows</span><span class="field-val">multi-step journeys</span></div>
+          <div class="field"><span class="field-key">requires_user_consent</span><span class="field-val">boolean, enforced</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram fade-in">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-name">DISCOVER</div>
+        <div class="flow-detail">Fetch .spsk<br>from domain</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-name">VALIDATE</div>
+        <div class="flow-detail">Verify Ed25519<br>signature (2ms)</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-name">NEGOTIATE</div>
+        <div class="flow-detail">Assess depth vs<br>token balance</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-name">CONSUME</div>
+        <div class="flow-detail">Read .spk<br>structured content</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-name">ACT</div>
+        <div class="flow-detail">Invoke .spki<br>actions</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div class="flow-name">SETTLE</div>
+        <div class="flow-detail">Token bank<br>transaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics-section" id="metrics">
+  <div class="metrics-inner">
+    <div class="section-label">Benchmark</div>
+    <h2 class="section-title">Structural gains,<br>not marginal ones.</h2>
+    <p class="section-sub">SparkLayer eliminates entire categories of processing — not just incremental improvements. These numbers reflect a protocol-level difference.</p>
+
+    <div class="metrics-grid fade-in">
+      <div class="metric-card">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-body">
+          <div class="metric-value">35×</div>
+          <div class="metric-label">Faster end-to-end processing</div>
+          <div class="metric-desc">262ms vs 9,170ms per document. Ed25519 verification is 2ms. Schema-directed parsing needs no inference.</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🧠</div>
+        <div class="metric-body">
+          <div class="metric-value">0</div>
+          <div class="metric-label">LLM calls to parse a document</div>
+          <div class="metric-desc">HTML scraping requires 4 separate LLM calls: classify paragraphs, extract entities, infer metadata, resolve action intents. SparkLayer: none.</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">💰</div>
+        <div class="metric-body">
+          <div class="metric-value">−100%</div>
+          <div class="metric-label">Per-document processing cost</div>
+          <div class="metric-desc">HTML pipeline: $0.044/document in LLM inference costs. SparkLayer: $0.000. At 1B docs/month: $527M annual savings.</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🎯</div>
+        <div class="metric-body">
+          <div class="metric-value">−54%</div>
+          <div class="metric-label">Hallucination risk reduction</div>
+          <div class="metric-desc">From 72% to 18%. Publisher-classified content with editorial review flags and version control dramatically reduces inference errors.</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:32px;font-size:13px;color:var(--ink-soft);text-align:center">
+      Benchmark methodology fully documented and reproducible. Source code available on GitHub. Honest caveats included.
+    </p>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<div class="section fade-in">
+  <div class="section-label">Use Cases</div>
+  <h2 class="section-title">Built for every<br>agent use case.</h2>
+
+  <div class="usecases-grid">
+    <div class="usecase-card">
+      <div class="usecase-emoji">🤖</div>
+      <div class="usecase-title">Agent Frameworks</div>
+      <div class="usecase-desc">A single skill integrates SparkLayer into LangGraph, CrewAI, AutoGen, or any custom agent loop. Discover → Verify → Consume → Pay in 6 CPU steps, 0 LLM calls.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">📰</div>
+      <div class="usecase-title">Content Publishers</div>
+      <div class="usecase-desc">Deploy Sparkifier via WordPress plugin. Auto-generate .spk files from existing content. Start monetizing AI consumption without changing your editorial workflow.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">🏗️</div>
+      <div class="usecase-title">AI Training Pipelines</div>
+      <div class="usecase-desc">Replace expensive HTML scraping with structured .spk ingestion. Pre-classified content, verified provenance, machine-readable licenses. Your data pipeline gets cleaner data cheaper.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">🏢</div>
+      <div class="usecase-title">Enterprise Intranet</div>
+      <div class="usecase-desc">SparkLayer Lite — same protocol, no vault server, no token bank. Deploy on Confluence, Notion, SharePoint. Agents navigate internal knowledge without DOM inference.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">🔬</div>
+      <div class="usecase-title">Research & Academia</div>
+      <div class="usecase-desc">Publish research with granular usage rights: display-only, non-commercial, research-only. Cite your work correctly in AI outputs. Track who consumed what.</div>
+    </div>
+    <div class="usecase-card">
+      <div class="usecase-emoji">⚖️</div>
+      <div class="usecase-title">Legal & Compliance</div>
+      <div class="usecase-desc">Full audit trail of AI content consumption. Cryptographic proof of licensing compliance. Directly implements EU AI Act Article 53 training data documentation requirements.</div>
+    </div>
+  </div>
+</div>
+
+<!-- EU AI ACT -->
+<section class="eu-section" id="eu">
+  <div class="eu-inner fade-in">
+    <div class="section-label">Regulatory Alignment</div>
+    <h2 class="section-title">Built for the<br>AI Act.</h2>
+    <p class="section-sub">The EU AI Act creates legal obligations that require a technical standard to implement. SparkLayer is that standard — designed with specific reference to Articles 10 and 53.</p>
+
+    <div class="articles-grid">
+      <div class="article-card">
+        <div class="article-ref">Art. 53(1)(c)</div>
+        <div class="article-title">Copyright Compliance</div>
+        <div class="article-desc">Machine-readable usage rights per content block. Crawlers programmatically verify permitted uses before ingestion.</div>
+        <div class="article-status">IMPLEMENTED</div>
+      </div>
+      <div class="article-card">
+        <div class="article-ref">Art. 53(1)(d)</div>
+        <div class="article-title">Training Data Summaries</div>
+        <div class="article-desc">Cryptographically signed provenance on every document: author, publisher, date, version, editorial review status.</div>
+        <div class="article-status">IMPLEMENTED</div>
+      </div>
+      <div class="article-card">
+        <div class="article-ref">Art. 10(2)(5)</div>
+        <div class="article-title">Data Quality & Provenance</div>
+        <div class="article-desc">SHA-256 content integrity, Ed25519 signatures, editorial flags, fact-check status, version control.</div>
+        <div class="article-status">IMPLEMENTED</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="https://github.com/totalarico702/SparkLayer/blob/main/Docs/Legal/SparkLayer_Position_Paper_EU_AIAct.docx" target="_blank" class="btn btn-gold btn-lg">📄 Read Position Paper</a>
+      <a href="https://digital-strategy.ec.europa.eu/en/policies/ai-act-gpai-code-of-practice" target="_blank" class="btn btn-ghost btn-lg" style="color:white;border-color:rgba(255,255,255,0.3)">GPAI Consultation →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CODE -->
+<section class="code-section" id="code">
+  <div class="code-inner">
+    <div class="section-label">For Developers</div>
+    <h2 class="section-title" style="color:white">Integrate in<br>one afternoon.</h2>
+    <p class="section-sub">Open-source, MIT licensed. Works with any agent framework. Two commands to start.</p>
+
+    <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; margin-top: 48px;">
+      <div class="code-tabs">
+        <div class="tab active" onclick="switchTab(event,'publisher')">Publisher (Sparkifier)</div>
+        <div class="tab" onclick="switchTab(event,'agent')">Agent Skill</div>
+        <div class="tab" onclick="switchTab(event,'langgraph')">LangGraph</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-panel active" id="publisher">
+<span class="c-cmt"># Install</span>
+pip install beautifulsoup4 markdown cryptography
+
+<span class="c-cmt"># Convert your article to SparkLayer files</span>
+python sparkifier.py \
+  <span class="c-key">--input</span>  article.md \
+  <span class="c-key">--domain</span> yoursite.com \
+  <span class="c-key">--output</span> ./spark_out
+
+<span class="c-cmt"># Output:</span>
+<span class="c-spark">  spark.spsk</span>                        <span class="c-cmt">→ serve at /.well-known/spark.spsk</span>
+<span class="c-spark">  your-article.spk</span>                  <span class="c-cmt">→ signed knowledge graph</span>
+<span class="c-spark">  actions.spki</span>                      <span class="c-cmt">→ action interfaces</span>
+<span class="c-spark">  your-article.html</span>                 <span class="c-cmt">→ depth_0 HTML bridge</span>
+
+<span class="c-cmt"># Depth pricing (optional)</span>
+python sparkifier.py --input article.md --domain yoursite.com \
+  <span class="c-key">--depth-2-cost</span> <span class="c-val">15</span> \
+  <span class="c-key">--depth-3-cost</span> <span class="c-val">80</span>
+        </div>
+
+        <div class="code-panel" id="agent">
+<span class="c-cmt">from</span> sparklayer_skill <span class="c-cmt">import</span> SparkLayerSkill, TokenWallet
+
+<span class="c-cmt"># Initialize with token budget</span>
+wallet = TokenWallet(balance=<span class="c-val">500</span>, agent_id=<span class="c-str">"spark:agent:my-agent"</span>)
+spark  = SparkLayerSkill(wallet=wallet)
+
+<span class="c-cmt"># 1. Discover — is this domain SparkLayer-enabled?</span>
+site_key = spark.discover(<span class="c-str">"example-media.com"</span>)
+
+<span class="c-cmt"># 2. Search the knowledge graph</span>
+results = spark.search(<span class="c-str">"example-media.com"</span>, <span class="c-str">"agent protocols 2026"</span>)
+
+<span class="c-cmt"># 3. Consume content (signature auto-verified)</span>
+content = spark.consume(results[<span class="c-val">0</span>].content_id, depth=<span class="c-val">2</span>)
+
+<span class="c-cmt"># 4. Get LLM-ready context block</span>
+<span class="c-key">print</span>(content.to_context_block())
+
+<span class="c-cmt"># Wallet auto-debited, receipt stored</span>
+<span class="c-key">print</span>(wallet.statement())
+        </div>
+
+        <div class="code-panel" id="langgraph">
+<span class="c-cmt">from</span> sparklayer_skill <span class="c-cmt">import</span> SparkLayerSkill, TokenWallet, as_langgraph_tools
+<span class="c-cmt">from</span> langgraph.prebuilt <span class="c-cmt">import</span> create_react_agent
+
+<span class="c-cmt"># Create SparkLayer tools</span>
+wallet = TokenWallet(balance=<span class="c-val">1000</span>)
+skill  = SparkLayerSkill(wallet=wallet)
+tools  = as_langgraph_tools(skill)
+
+<span class="c-cmt"># tools is a list of 4 callables:</span>
+<span class="c-cmt">#   spark_discover(domain)</span>
+<span class="c-cmt">#   spark_search(domain, query)</span>
+<span class="c-cmt">#   spark_consume(content_id, depth)</span>
+<span class="c-cmt">#   spark_wallet_balance()</span>
+
+<span class="c-cmt"># Plug into any LangGraph agent</span>
+agent = create_react_agent(
+    model=llm,
+    tools=[*other_tools, *tools]
+)
+
+<span class="c-cmt"># Agent now automatically discovers SparkLayer domains</span>
+<span class="c-cmt"># and prefers structured content over HTML scraping</span>
+result = agent.invoke({<span class="c-str">"messages"</span>: [(<span class="c-str">"user"</span>, <span class="c-str">"Research AI protocols on example-media.com"</span>)]})
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:16px;margin-top:32px;flex-wrap:wrap">
+      <a href="https://github.com/totalarico702/SparkLayer/archive/refs/heads/main.zip" class="btn btn-primary btn-lg">📦 Download SDK</a>
+      <a href="https://github.com/totalarico702/SparkLayer/blob/main/Docs/WhitePaper/sparklayer_whitepaper_v2.md" target="_blank" class="btn btn-ghost btn-lg" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2)">Read the Spec →</a>
+      <a href="https://github.com/totalarico702/SparkLayer/tree/main/Config" target="_blank" class="btn btn-ghost btn-lg" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2)">JSON Schemas →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div style="position:relative;z-index:1">
+    <div class="section-label" style="text-align:center">Get Involved</div>
+    <h2 class="section-title">The agent web<br>is being built now.</h2>
+    <p class="section-sub" style="text-align:center">SparkLayer is open-source and open to contribution. The standardisation window is open for 12–18 months.</p>
+    <div class="cta-actions">
+      <a href="https://github.com/totalarico702/SparkLayer#quick-start" target="_blank" class="btn btn-primary btn-lg">Start Building</a>
+      <a href="https://github.com/totalarico702/SparkLayer/blob/main/Scripts/sparkifier.py" target="_blank" class="btn btn-outline btn-lg">Publishers: Deploy</a>
+      <a href="https://digital-strategy.ec.europa.eu/en/policies/ai-act-gpai-code-of-practice" target="_blank" class="btn btn-gold btn-lg">🇪🇺 EU Consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">.spark<span>layer</span></div>
+  <div class="footer-links">
+    <a href="https://github.com/totalarico702/SparkLayer/blob/main/Docs/WhitePaper/sparklayer_whitepaper_v2.md" target="_blank">Protocol Spec</a>
+    <a href="https://github.com/totalarico702/SparkLayer" target="_blank">GitHub</a>
+    <a href="https://github.com/totalarico702/SparkLayer/blob/main/Docs/WhitePaper/sparklayer_whitepaper_v2.md" target="_blank">Whitepaper</a>
+    <a href="https://github.com/totalarico702/SparkLayer/blob/main/Docs/Legal/SparkLayer_Position_Paper_EU_AIAct.docx" target="_blank">Position Paper</a>
+    <a href="mailto:romuald.martin@gmail.com">Contact</a>
+  </div>
+  <div>MIT License · v2.0 · 2026</div>
+</footer>
+
+<script>
+// Tab switching
+function switchTab(e, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// Fade in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

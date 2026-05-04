@@ -1,0 +1,186 @@
+{
+  "html": {
+    "method": "HTML Scraping",
+    "total_tokens": 3116,
+    "content_tokens": 1263,
+    "actionable_tokens": 947,
+    "noise_tokens": 1853,
+    "raw_signal_ratio": 0.405,
+    "actionable_signal_ratio": 0.304,
+    "steps": [
+      {
+        "step_num": 1,
+        "name": "Fetch & render page",
+        "type": "CPU",
+        "latency_ms": 850,
+        "cost_usd": 0.001,
+        "reliability": 0.92,
+        "output_desc": "Raw HTML including JS-rendered content"
+      },
+      {
+        "step_num": 2,
+        "name": "Strip structural noise",
+        "type": "CPU",
+        "latency_ms": 120,
+        "cost_usd": 0.0,
+        "reliability": 0.85,
+        "output_desc": "HTML minus scripts/nav/ads/footer"
+      },
+      {
+        "step_num": 3,
+        "name": "Extract main content",
+        "type": "CPU",
+        "latency_ms": 200,
+        "cost_usd": 0.0037890000000000003,
+        "reliability": 0.8,
+        "output_desc": "Plain text content block"
+      },
+      {
+        "step_num": 4,
+        "name": "LLM: classify paragraphs",
+        "type": "LLM",
+        "latency_ms": 2500,
+        "cost_usd": 0.009459,
+        "reliability": 0.75,
+        "output_desc": "Content type labels (Fact/Opinion/Context...)"
+      },
+      {
+        "step_num": 5,
+        "name": "LLM: extract entities",
+        "type": "LLM",
+        "latency_ms": 1800,
+        "cost_usd": 0.0066240000000000005,
+        "reliability": 0.72,
+        "output_desc": "Named entities (no disambiguation IDs)"
+      },
+      {
+        "step_num": 6,
+        "name": "LLM: infer metadata",
+        "type": "LLM",
+        "latency_ms": 1200,
+        "cost_usd": 0.012348000000000001,
+        "reliability": 0.6,
+        "output_desc": "Author, date, license (often missing or ambiguous)"
+      },
+      {
+        "step_num": 7,
+        "name": "LLM: resolve action intents",
+        "type": "LLM",
+        "latency_ms": 2200,
+        "cost_usd": 0.008829,
+        "reliability": 0.65,
+        "output_desc": "What each button/link does (high ambiguity)"
+      },
+      {
+        "step_num": 8,
+        "name": "Dedup + quality filter",
+        "type": "CPU",
+        "latency_ms": 300,
+        "cost_usd": 0.0018945000000000001,
+        "reliability": 0.9,
+        "output_desc": "Remove duplicates, basic fact-check"
+      }
+    ],
+    "llm_calls": 4,
+    "total_latency_ms": 9170,
+    "total_cost_usd": 0.04394,
+    "cumulative_reliability": 0.119,
+    "classification_accuracy": 0.75,
+    "entity_precision": 0.68,
+    "provenance_score": 0.05,
+    "hallucination_risk": 0.72,
+    "semantic_richness": 0.2,
+    "notes": [
+      "Total DOM elements: 109",
+      "Interactive elements: 9",
+      "Noise: 1,853 tokens (59% of total)",
+      "No cryptographic provenance \u2014 cannot verify authenticity",
+      "Classification accuracy 75% \u2014 25% of content mistyped",
+      "Intent resolution: 4 separate LLM calls required"
+    ]
+  },
+  "spk": {
+    "method": "SparkLayer .spk",
+    "total_tokens": 2303,
+    "content_tokens": 378,
+    "actionable_tokens": 2303,
+    "noise_tokens": 0,
+    "raw_signal_ratio": 0.164,
+    "actionable_signal_ratio": 1.0,
+    "steps": [
+      {
+        "step_num": 1,
+        "name": "Fetch .spsk (cached after first use)",
+        "type": "CPU",
+        "latency_ms": 80,
+        "cost_usd": 0.0,
+        "reliability": 0.99,
+        "output_desc": "Publisher identity + public keys (TTL=3600s)"
+      },
+      {
+        "step_num": 2,
+        "name": "Verify Ed25519 signature",
+        "type": "CPU",
+        "latency_ms": 2,
+        "cost_usd": 0.0,
+        "reliability": 0.99,
+        "output_desc": "Cryptographic proof: content unaltered since signing"
+      },
+      {
+        "step_num": 3,
+        "name": "Fetch .spk (per article)",
+        "type": "CPU",
+        "latency_ms": 150,
+        "cost_usd": 0.0,
+        "reliability": 0.98,
+        "output_desc": "Pre-classified, depth-partitioned knowledge graph"
+      },
+      {
+        "step_num": 4,
+        "name": "Schema-directed parse",
+        "type": "CPU",
+        "latency_ms": 15,
+        "cost_usd": 0.0,
+        "reliability": 0.99,
+        "output_desc": "Read pre-classified sections \u2014 zero inference needed"
+      },
+      {
+        "step_num": 5,
+        "name": "Entity graph load",
+        "type": "CPU",
+        "latency_ms": 5,
+        "cost_usd": 0.0,
+        "reliability": 0.99,
+        "output_desc": "Pre-disambiguated entities with @id references"
+      },
+      {
+        "step_num": 6,
+        "name": "Load .spki intents (cached)",
+        "type": "CPU",
+        "latency_ms": 10,
+        "cost_usd": 0.0,
+        "reliability": 0.99,
+        "output_desc": "Action surfaces with declared intents \u2014 zero inference"
+      }
+    ],
+    "llm_calls": 0,
+    "total_latency_ms": 262,
+    "total_cost_usd": 0.0,
+    "cumulative_reliability": 0.932,
+    "classification_accuracy": 0.95,
+    "entity_precision": 0.94,
+    "provenance_score": 1.0,
+    "hallucination_risk": 0.18,
+    "semantic_richness": 0.7,
+    "notes": [
+      ".spsk: 338t (fetched once, TTL-cached)",
+      ".spk:  2303t (per-article, signed)",
+      ".spki: 1477t (fetched once per domain, cached)",
+      "Pre-classified: 11 sections with spark:sectionType",
+      "Actions declared: 4 with intent_category (0 inference calls)",
+      "Flows declared: 1 (agent knows journey structure upfront)",
+      "Provenance: Ed25519 signed, version-controlled, editorial flags"
+    ]
+  },
+  "timestamp": "2026-05-03T12:31:21.186917+00:00"
+}

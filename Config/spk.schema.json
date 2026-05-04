@@ -1,0 +1,473 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sparkprotocol.io/schemas/v2/spk.schema.json",
+  "title": "SparkLayer Knowledge Document (.spk)",
+  "description": "Signed, depth-layered semantic knowledge representation of a content resource. Contains the structured knowledge graph partitioned by access level.",
+  "type": "object",
+  "required": [
+    "@context",
+    "@id",
+    "@type",
+    "publisher",
+    "datePublished",
+    "version",
+    "depth_layers",
+    "integrity"
+  ],
+  "additionalProperties": false,
+  "properties": {
+
+    "@context": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "JSON-LD context(s). Must include SparkLayer v2 context.",
+      "examples": [
+        ["https://schema.org/", "https://sparkprotocol.io/context/spk-v2.jsonld"]
+      ]
+    },
+
+    "@id": {
+      "type": "string",
+      "pattern": "^spark:(article|product|dataset|page|document|media):.+$",
+      "description": "Globally unique content identifier.",
+      "examples": [
+        "spark:article:example.com/tech/ai-first-web",
+        "spark:product:shop.example.com/sku-4521",
+        "spark:dataset:research.example.com/study-2026-q1"
+      ]
+    },
+
+    "@type": {
+      "type": "string",
+      "description": "Schema.org type of the content resource.",
+      "examples": ["Article", "Product", "Dataset", "WebPage", "NewsArticle", "BlogPosting", "ScholarlyArticle"]
+    },
+
+    "headline": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Primary title of the content."
+    },
+
+    "author": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["@type", "name"],
+          "properties": {
+            "@type": { "type": "string", "enum": ["Person", "Organization"] },
+            "name": { "type": "string" },
+            "identifier": {
+              "type": "string",
+              "description": "Persistent identifier (ORCID, Wikidata Q-ID, etc.)",
+              "examples": ["ORCID:0000-0002-1825-0097", "wikidata:Q12345"]
+            },
+            "url": { "type": "string", "format": "uri" }
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@type", "name"]
+          }
+        }
+      ]
+    },
+
+    "publisher": {
+      "type": "object",
+      "required": ["@id"],
+      "properties": {
+        "@id": {
+          "type": "string",
+          "pattern": "^spark:org:.+$"
+        },
+        "name": { "type": "string" }
+      }
+    },
+
+    "datePublished": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 publication date."
+    },
+
+    "dateModified": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "version": {
+      "type": "string",
+      "description": "Content version identifier.",
+      "examples": ["v1.0", "v2.3", "20260501T120000Z"]
+    },
+
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier or custom license URL.",
+      "examples": ["CC-BY-4.0", "CC0-1.0", "proprietary", "https://example.com/license"]
+    },
+
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+      "description": "ISO 639-1 language code.",
+      "examples": ["en", "fr", "de", "zh-CN"]
+    },
+
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 100 },
+      "maxItems": 50
+    },
+
+    "depth_layers": {
+      "type": "object",
+      "description": "Content partitioned by depth level. Keys are stringified integers ('0', '1', '2', etc.). Depth 0 is always public. Higher depths require increasing access levels.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9]+$": {
+          "type": "object",
+          "required": ["access"],
+          "additionalProperties": false,
+          "properties": {
+
+            "access": {
+              "type": "string",
+              "enum": ["public", "token_required", "vault_required", "partner_only"],
+              "description": "Access level required for this depth layer."
+            },
+
+            "token_cost": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "SparkTokens required to access this depth layer. 0 = free but requires agent identity."
+            },
+
+            "usage": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["train", "finetune", "display", "rag", "inference"]
+              },
+              "description": "Permitted AI usage rights for content at this depth level."
+            },
+
+            "vault_ref": {
+              "type": "string",
+              "pattern": "^vault://.+$",
+              "description": "Vault URI for vault_required depth layers. Content is not inline — fetched via vault handshake."
+            },
+
+            "content": {
+              "$ref": "#/$defs/DepthContent",
+              "description": "Inline content for public and token_required depths."
+            },
+
+            "content_descriptor": {
+              "$ref": "#/$defs/ContentDescriptor",
+              "description": "Metadata descriptor for vault_required depths (content not inline)."
+            }
+          }
+        }
+      }
+    },
+
+    "related": {
+      "type": "array",
+      "description": "Semantic relations to other SparkLayer content.",
+      "items": {
+        "type": "object",
+        "required": ["@id", "relation"],
+        "additionalProperties": false,
+        "properties": {
+          "@id": {
+            "type": "string",
+            "pattern": "^spark:.+$"
+          },
+          "relation": {
+            "type": "string",
+            "enum": [
+              "elaborates",
+              "cites",
+              "derived-from",
+              "translates",
+              "aggregates",
+              "contradicts",
+              "updates",
+              "supersedes"
+            ]
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Confidence score of the relation (1.0 = certain, 0.0 = speculative)."
+          }
+        }
+      }
+    },
+
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "type": "string",
+          "format": "uri",
+          "description": "Canonical URL of the original human-readable content."
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Identifier of the system/agent that created this .spk file.",
+          "examples": ["spark:agent:sparkifier-v2", "spark:agent:human-editorial"]
+        },
+        "editorial_review": {
+          "type": "boolean",
+          "description": "Whether content has been reviewed by a human editor."
+        },
+        "fact_checked": {
+          "type": "boolean"
+        },
+        "last_verified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "abysse_data": {
+          "type": "boolean",
+          "default": false,
+          "description": "CRITICAL: If true, this is honeypot content. Compliant agents MUST discard and log. Never train on this data."
+        }
+      }
+    },
+
+    "integrity": {
+      "type": "object",
+      "required": ["hash_algorithm", "content_hash", "signature", "signing_key"],
+      "additionalProperties": false,
+      "description": "Cryptographic integrity proof. Agents MUST verify before using content.",
+      "properties": {
+        "hash_algorithm": {
+          "type": "string",
+          "enum": ["SHA-256", "SHA-512", "BLAKE2b"],
+          "default": "SHA-256"
+        },
+        "content_hash": {
+          "type": "string",
+          "description": "Hash of the depth_layers object (canonical JSON, UTF-8). Does not include this integrity block or mutable metadata."
+        },
+        "signature": {
+          "type": "string",
+          "description": "Ed25519 signature of content_hash, base64url-encoded."
+        },
+        "signing_key": {
+          "type": "string",
+          "pattern": "^spark:key:.+$",
+          "description": "Reference to the public key in .spsk used for this signature."
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+
+  "$defs": {
+
+    "DepthContent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+
+        "summary": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Machine-readable summary (depth_0 primarily)."
+        },
+
+        "sections": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Section" }
+        },
+
+        "entities": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Entity" },
+          "description": "Named entities present in this depth layer."
+        },
+
+        "statistics": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Statistic" }
+        },
+
+        "datasets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/DatasetRef" }
+        }
+      }
+    },
+
+    "Section": {
+      "type": "object",
+      "required": ["@type", "text"],
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "const": "spark:Section"
+        },
+        "spark:sectionType": {
+          "type": "string",
+          "enum": [
+            "Context",
+            "Fact",
+            "Analysis",
+            "Methodology",
+            "Opinion",
+            "Conclusion",
+            "Warning",
+            "Instruction",
+            "Code",
+            "Citation",
+            "Glossary"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "description": "Textual content of this section."
+        },
+        "entities": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Entity" }
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@id"],
+            "properties": {
+              "@id": { "type": "string" },
+              "text": { "type": "string" }
+            }
+          }
+        },
+        "trainable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether this specific section can be used for model training. Overrides depth-level usage if false."
+        }
+      }
+    },
+
+    "Entity": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "@id": {
+          "type": "string",
+          "description": "Persistent entity identifier (Wikidata, schema.org, or spark: namespace).",
+          "examples": ["wikidata:Q42", "spark:concept:agent-protocols", "schema:Organization"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Canonical name of the entity."
+        },
+        "type": {
+          "type": "string",
+          "description": "Schema.org or SparkLayer type.",
+          "examples": ["Person", "Organization", "Concept", "Location", "Product"]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+
+    "Statistic": {
+      "type": "object",
+      "required": ["value", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "@type": { "type": "string", "const": "spark:Statistic" },
+        "value": {
+          "description": "The statistic value (number, percentage string, range, etc.)",
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "unit": { "type": "string" },
+        "description": { "type": "string" },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Statistical confidence level (0.95 = 95% confidence interval)."
+        },
+        "source": {
+          "type": "string",
+          "description": "spark: reference to the source dataset or study."
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date",
+          "description": "Date this statistic was current."
+        }
+      }
+    },
+
+    "DatasetRef": {
+      "type": "object",
+      "required": ["@type", "format"],
+      "additionalProperties": false,
+      "properties": {
+        "@type": { "type": "string", "const": "spark:Dataset" },
+        "format": {
+          "type": "string",
+          "enum": ["JSON", "CSV", "Parquet", "HDF5", "XML", "RDF/Turtle"]
+        },
+        "records": {
+          "type": "integer",
+          "description": "Number of records in the dataset."
+        },
+        "schema_url": {
+          "type": "string",
+          "description": "URL to dataset schema definition."
+        },
+        "sample_url": {
+          "type": "string",
+          "description": "URL to a public sample (first N records)."
+        }
+      }
+    },
+
+    "ContentDescriptor": {
+      "type": "object",
+      "description": "Metadata about vault-gated content without revealing the content itself.",
+      "required": ["@type"],
+      "additionalProperties": false,
+      "properties": {
+        "@type": {
+          "type": "string",
+          "enum": ["spark:Dataset", "spark:MediaAsset", "spark:Document", "spark:Code"]
+        },
+        "format": { "type": "string" },
+        "size_bytes": { "type": "integer" },
+        "records": { "type": "integer" },
+        "duration_seconds": { "type": "number" },
+        "resolution": { "type": "string", "examples": ["1920x1080", "4K"] },
+        "schema_url": { "type": "string", "format": "uri" },
+        "preview_url": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}

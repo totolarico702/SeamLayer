@@ -1,0 +1,483 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sparkprotocol.io/schemas/v2/spki.schema.json",
+  "title": "SparkLayer Knowledge Interface (.spki)",
+  "description": "Signed action surface descriptor. Defines operations that autonomous agents can invoke on a publisher's services. Designed for machine consumption at inference time — not human developer documentation.",
+  "type": "object",
+  "required": [
+    "@context",
+    "@id",
+    "@type",
+    "publisher",
+    "version",
+    "actions",
+    "integrity"
+  ],
+  "additionalProperties": false,
+  "properties": {
+
+    "@context": {
+      "type": "string",
+      "const": "https://sparkprotocol.io/context/spki-v2.jsonld"
+    },
+
+    "@id": {
+      "type": "string",
+      "pattern": "^spark:interface:.+$",
+      "description": "Unique identifier for this interface.",
+      "examples": ["spark:interface:example.com", "spark:interface:shop.example.com:ecommerce"]
+    },
+
+    "@type": {
+      "type": "string",
+      "const": "SparkInterface"
+    },
+
+    "publisher": {
+      "type": "object",
+      "required": ["@id"],
+      "properties": {
+        "@id": { "type": "string", "pattern": "^spark:org:.+$" },
+        "name": { "type": "string" }
+      }
+    },
+
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this interface.",
+      "examples": ["1.0.0", "2.3.1"]
+    },
+
+    "last_updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "base_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL for all relative endpoint paths in actions."
+    },
+
+    "global_rate_limits": {
+      "$ref": "#/$defs/RateLimit",
+      "description": "Default rate limits applied to all actions unless overridden."
+    },
+
+    "authentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Authentication schemes supported by this interface.",
+      "properties": {
+        "spark_agent_id": {
+          "type": "boolean",
+          "default": true,
+          "description": "Accepts X-Spark-Agent-ID header for agent identity."
+        },
+        "jwt": {
+          "type": "boolean",
+          "description": "Accepts Bearer JWT tokens from Spark vault handshake."
+        },
+        "api_key": {
+          "type": "boolean",
+          "description": "Accepts X-API-Key header for partner access."
+        },
+        "oauth2": {
+          "type": "object",
+          "properties": {
+            "authorization_url": { "type": "string", "format": "uri" },
+            "token_url": { "type": "string", "format": "uri" },
+            "scopes": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Array of ActionIntent objects describing available operations.",
+      "items": { "$ref": "#/$defs/ActionIntent" }
+    },
+
+    "flows": {
+      "type": "array",
+      "description": "Multi-step flows composed of action sequences. Agents use flows to understand journey structure without inferring it from individual actions.",
+      "items": { "$ref": "#/$defs/Flow" }
+    },
+
+    "integrity": {
+      "type": "object",
+      "required": ["hash_algorithm", "content_hash", "signature", "signing_key"],
+      "additionalProperties": false,
+      "properties": {
+        "hash_algorithm": {
+          "type": "string",
+          "enum": ["SHA-256", "SHA-512"],
+          "default": "SHA-256"
+        },
+        "content_hash": {
+          "type": "string",
+          "description": "Hash of the actions array (canonical JSON). Does not include this integrity block."
+        },
+        "signature": {
+          "type": "string",
+          "description": "Ed25519 signature of content_hash, base64url-encoded."
+        },
+        "signing_key": {
+          "type": "string",
+          "pattern": "^spark:key:.+$"
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+
+  "$defs": {
+
+    "ActionIntent": {
+      "type": "object",
+      "required": [
+        "@id",
+        "@type",
+        "name",
+        "intent_category",
+        "access_level",
+        "http_method",
+        "endpoint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+
+        "@id": {
+          "type": "string",
+          "pattern": "^spark:action:.+$",
+          "description": "Unique action identifier.",
+          "examples": [
+            "spark:action:example.com/search",
+            "spark:action:shop.example.com/add-to-cart",
+            "spark:action:example.com/subscribe"
+          ]
+        },
+
+        "@type": {
+          "type": "string",
+          "const": "spark:ActionIntent"
+        },
+
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Short human-readable name for debugging/logging."
+        },
+
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "What this action does. Written for machine inference, not human documentation."
+        },
+
+        "intent_category": {
+          "type": "string",
+          "enum": [
+            "query",
+            "transaction",
+            "registration",
+            "modification",
+            "deletion",
+            "notification",
+            "delegation",
+            "discovery"
+          ],
+          "description": "Semantic category of this action. Agents use this to reason about action types without parsing descriptions."
+        },
+
+        "intent_subcategory": {
+          "type": "string",
+          "description": "Fine-grained intent. Namespaced as spark:intent:<category>:<subcategory>",
+          "examples": [
+            "spark:intent:query:search",
+            "spark:intent:transaction:purchase",
+            "spark:intent:registration:newsletter-signup",
+            "spark:intent:delegation:checkout"
+          ]
+        },
+
+        "access_level": {
+          "type": "string",
+          "enum": [
+            "public",
+            "authenticated",
+            "user_delegated",
+            "partner_api_key",
+            "paid_subscription",
+            "vault_only"
+          ],
+          "description": "Minimum access level required to invoke this action."
+        },
+
+        "requires_user_consent": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, agent MUST obtain explicit user consent token before invoking. Mandatory for delegation and user-affecting actions."
+        },
+
+        "reversible": {
+          "type": "boolean",
+          "description": "Whether the action can be undone. Agents should warn users before irreversible actions."
+        },
+
+        "affects_external_parties": {
+          "type": "boolean",
+          "description": "Whether this action sends data to or affects third parties (e.g., sends email, creates public content)."
+        },
+
+        "http_method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+          "description": "HTTP method for this action."
+        },
+
+        "endpoint": {
+          "type": "string",
+          "description": "Full URL or path relative to base_url.",
+          "examples": [
+            "https://api.example.com/spark/v2/search",
+            "/spark/v2/products/search"
+          ]
+        },
+
+        "input_schema": {
+          "type": "object",
+          "description": "Parameters accepted by this action. Keyed by parameter name.",
+          "additionalProperties": {
+            "$ref": "#/$defs/Parameter"
+          }
+        },
+
+        "output_schema": {
+          "type": "object",
+          "description": "Response structure. Keyed by field name with type descriptions.",
+          "additionalProperties": {
+            "type": "string",
+            "description": "Type descriptor for this field.",
+            "examples": ["string", "integer", "boolean", "ISO8601", "array<spark:KnowledgeRef>", "string?"]
+          }
+        },
+
+        "cost_per_invocation": {
+          "$ref": "#/$defs/InvocationCost"
+        },
+
+        "rate_limit": {
+          "$ref": "#/$defs/RateLimit",
+          "description": "Per-action rate limit. Overrides global_rate_limits if present."
+        },
+
+        "idempotency": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether repeated identical requests produce the same result (safe to retry)."
+        },
+
+        "estimated_completion_time": {
+          "type": "string",
+          "description": "ISO 8601 duration for typical completion.",
+          "examples": ["PT1S", "PT5S", "PT30S"]
+        },
+
+        "on_success": {
+          "type": "string",
+          "description": "State description after successful invocation.",
+          "examples": ["spark:state:user:subscribed", "spark:state:cart:item-added"]
+        },
+
+        "on_failure": {
+          "type": "string",
+          "description": "State description after failed invocation.",
+          "default": "spark:state:unchanged"
+        },
+
+        "deprecated": {
+          "type": "boolean",
+          "default": false
+        },
+
+        "deprecated_message": {
+          "type": "string",
+          "description": "If deprecated, message explaining replacement."
+        }
+      }
+    },
+
+    "Parameter": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["string", "integer", "number", "boolean", "array", "object"],
+          "description": "JSON primitive type of the parameter."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "default": {
+          "description": "Default value if parameter is not provided."
+        },
+        "enum": {
+          "type": "array",
+          "description": "Allowed values for string parameters."
+        },
+        "min": {
+          "type": "number",
+          "description": "Minimum value for numeric parameters."
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum value for numeric parameters."
+        },
+        "max_length": {
+          "type": "integer",
+          "description": "Maximum string length."
+        },
+        "format": {
+          "type": "string",
+          "enum": ["uri", "email", "date-time", "date", "uuid", "spark-id"],
+          "description": "Semantic format constraint for string parameters."
+        },
+        "sensitive": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, this parameter contains PII or credentials. Agents must handle with care and never log."
+        }
+      }
+    },
+
+    "InvocationCost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tokens": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Fixed token cost per invocation. 0 = free."
+            },
+            {
+              "type": "string",
+              "enum": ["variable"],
+              "description": "Variable cost — see pricing_ref for calculation."
+            }
+          ]
+        },
+        "pricing_ref": {
+          "type": "string",
+          "description": "Reference to the pricing rule when cost is variable.",
+          "examples": ["spark:article:*:depth_layers", "spark:pricing:example.com:enterprise"]
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Human-readable note about cost structure."
+        }
+      }
+    },
+
+    "RateLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requests_per_minute": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requests_per_hour": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requests_per_day": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "burst": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum requests in a short burst before rate limiting applies."
+        },
+        "per_agent_daily_limit": {
+          "type": "integer",
+          "description": "Maximum requests per day per unique agent identity."
+        }
+      }
+    },
+
+    "Flow": {
+      "type": "object",
+      "required": ["@id", "name", "steps"],
+      "additionalProperties": false,
+      "description": "A named multi-step journey composed of action sequences. Allows agents to understand complete workflows without inferring them from individual actions.",
+      "properties": {
+        "@id": {
+          "type": "string",
+          "pattern": "^spark:flow:.+$",
+          "examples": ["spark:flow:example.com/checkout", "spark:flow:example.com/content-purchase"]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["step", "action"],
+            "additionalProperties": false,
+            "properties": {
+              "step": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "action": {
+                "type": "string",
+                "pattern": "^spark:action:.+$",
+                "description": "Reference to an ActionIntent @id."
+              },
+              "intent": {
+                "type": "string",
+                "description": "Semantic description of this step's purpose in the flow."
+              },
+              "optional": {
+                "type": "boolean",
+                "default": false
+              },
+              "condition": {
+                "type": "string",
+                "description": "Condition under which this step is executed.",
+                "examples": ["if_cart_not_empty", "if_user_not_authenticated"]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "@context": "https://sparkprotocol.io/context/spki-v2.jsonld",
+  "@id": "spark:interface:example-media.com",
+  "@type": "SparkInterface",
+  "publisher": {
+    "@id": "spark:org:example-mediacom",
+    "name": "example-media.com"
+  },
+  "version": "1.0.0",
+  "last_updated": "2026-05-03T12:18:50Z",
+  "base_url": "https://api.example-media.com",
+  "global_rate_limits": {
+    "requests_per_minute": 60,
+    "requests_per_hour": 1000,
+    "burst": 15,
+    "per_agent_daily_limit": 10000
+  },
+  "authentication": {
+    "spark_agent_id": true,
+    "jwt": true,
+    "api_key": true
+  },
+  "actions": [
+    {
+      "@id": "spark:action:example-media.com/search",
+      "@type": "spark:ActionIntent",
+      "name": "Search Content",
+      "description": "Semantic search across knowledge graph",
+      "intent_category": "query",
+      "intent_subcategory": "spark:intent:query:search",
+      "access_level": "public",
+      "requires_user_consent": false,
+      "reversible": true,
+      "affects_external_parties": false,
+      "http_method": "GET",
+      "endpoint": "https://api.example-media.com/spark/v2/search",
+      "input_schema": {
+        "q": {
+          "type": "string",
+          "required": true,
+          "max_length": 500,
+          "description": "Search query"
+        },
+        "depth_max": {
+          "type": "integer",
+          "required": false,
+          "default": 1,
+          "min": 0,
+          "max": 3,
+          "description": "Max depth level"
+        },
+        "limit": {
+          "type": "integer",
+          "required": false,
+          "default": 10,
+          "min": 1,
+          "max": 100,
+          "description": "Max results"
+        }
+      },
+      "output_schema": {
+        "results": "array<spark:KnowledgeRef>",
+        "total": "integer",
+        "next_cursor": "string?"
+      },
+      "cost_per_invocation": {
+        "tokens": 0
+      },
+      "rate_limit": {
+        "requests_per_minute": 30
+      },
+      "idempotency": true,
+      "estimated_completion_time": "PT1S"
+    },
+    {
+      "@id": "spark:action:example-media.com/get-content",
+      "@type": "spark:ActionIntent",
+      "name": "Get Content",
+      "description": "Retrieve .spk document by spark: identifier at specified depth",
+      "intent_category": "query",
+      "intent_subcategory": "spark:intent:query:get-detail",
+      "access_level": "authenticated",
+      "requires_user_consent": false,
+      "reversible": true,
+      "affects_external_parties": false,
+      "http_method": "GET",
+      "endpoint": "https://api.example-media.com/spark/v2/content/{content_id}",
+      "input_schema": {
+        "content_id": {
+          "type": "string",
+          "required": true,
+          "format": "spark-id",
+          "description": "spark: identifier"
+        },
+        "depth": {
+          "type": "integer",
+          "required": false,
+          "default": 1,
+          "min": 0,
+          "max": 3,
+          "description": "Depth level requested"
+        }
+      },
+      "output_schema": {
+        "content": "spark:SpkDocument",
+        "depth_served": "integer",
+        "tokens_charged": "integer",
+        "receipt_id": "string?"
+      },
+      "cost_per_invocation": {
+        "tokens": "variable",
+        "pricing_ref": "spark:article:*:depth_layers"
+      },
+      "idempotency": true,
+      "estimated_completion_time": "PT2S"
+    },
+    {
+      "@id": "spark:action:example-media.com/purchase-access",
+      "@type": "spark:ActionIntent",
+      "name": "Purchase Depth Access",
+      "description": "Acquire time-limited vault access token for depth-gated content",
+      "intent_category": "transaction",
+      "intent_subcategory": "spark:intent:transaction:purchase",
+      "access_level": "authenticated",
+      "requires_user_consent": false,
+      "reversible": false,
+      "affects_external_parties": false,
+      "http_method": "POST",
+      "endpoint": "https://vault.example-media.com/spark/v2/purchase",
+      "input_schema": {
+        "content_id": {
+          "type": "string",
+          "required": true,
+          "format": "spark-id"
+        },
+        "depth_target": {
+          "type": "integer",
+          "required": true,
+          "min": 1,
+          "max": 3
+        },
+        "agent_wallet": {
+          "type": "string",
+          "required": true,
+          "description": "Token Bank wallet address"
+        }
+      },
+      "output_schema": {
+        "access_token": "string",
+        "expires_at": "ISO8601",
+        "tokens_charged": "integer",
+        "receipt_id": "string"
+      },
+      "cost_per_invocation": {
+        "tokens": "variable",
+        "pricing_ref": "spark:article:*:depth_layers"
+      },
+      "idempotency": true,
+      "estimated_completion_time": "PT3S",
+      "on_success": "spark:state:content:depth-access-granted",
+      "on_failure": "spark:state:unchanged"
+    },
+    {
+      "@id": "spark:action:example-media.com/report-error",
+      "@type": "spark:ActionIntent",
+      "name": "Report Content Error",
+      "description": "Submit factual error or outdated information for editorial review",
+      "intent_category": "notification",
+      "intent_subcategory": "spark:intent:notification:report-error",
+      "access_level": "authenticated",
+      "requires_user_consent": false,
+      "reversible": false,
+      "affects_external_parties": false,
+      "http_method": "POST",
+      "endpoint": "https://api.example-media.com/spark/v2/content/report",
+      "input_schema": {
+        "content_id": {
+          "type": "string",
+          "required": true,
+          "format": "spark-id"
+        },
+        "error_type": {
+          "type": "string",
+          "required": true,
+          "enum": [
+            "factual_error",
+            "outdated",
+            "broken_link",
+            "missing_citation",
+            "other"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "required": true,
+          "max_length": 1000
+        },
+        "suggested_correction": {
+          "type": "string",
+          "required": false,
+          "max_length": 2000
+        }
+      },
+      "output_schema": {
+        "report_id": "string",
+        "status": "string",
+        "estimated_review": "ISO8601"
+      },
+      "cost_per_invocation": {
+        "tokens": 0
+      },
+      "idempotency": false,
+      "estimated_completion_time": "PT1S"
+    }
+  ],
+  "flows": [
+    {
+      "@id": "spark:flow:example-media.com/research-access",
+      "name": "Research Content Access Flow",
+      "description": "Standard flow: discover → evaluate → purchase → consume",
+      "steps": [
+        {
+          "step": 1,
+          "action": "spark:action:example-media.com/search",
+          "intent": "discover relevant content"
+        },
+        {
+          "step": 2,
+          "action": "spark:action:example-media.com/get-content",
+          "intent": "retrieve public content and evaluate value"
+        },
+        {
+          "step": 3,
+          "action": "spark:action:example-media.com/purchase-access",
+          "intent": "acquire vault access token",
+          "optional": true,
+          "condition": "if_premium_depth_required"
+        },
+        {
+          "step": 4,
+          "action": "spark:action:example-media.com/get-content",
+          "intent": "retrieve full depth content",
+          "optional": true,
+          "condition": "if_access_token_acquired"
+        }
+      ]
+    }
+  ],
+  "integrity": {
+    "hash_algorithm": "SHA-256",
+    "content_hash": "83de37945a97ede58df2c7e37087a359b069a9adb50692b6a7d0dfc2cbc4c8ab",
+    "signature": "Z3LFKyJb0MSF0YkUTxUWaEW-me7R1uOKry3Ila-prmxFrD719phkmTwB4tZ9WTZaH18hxFjP7d8_MsgpWx66DA",
+    "signing_key": "spark:key:example-media.com:primary-2026",
+    "signed_at": "2026-05-03T12:18:50Z"
+  }
+}

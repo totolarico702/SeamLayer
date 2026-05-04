@@ -1,120 +1,160 @@
-# SparkLayer
-Revolutionizing web data encoding for AI comprehension
+# SparkLayer Protocol
 
-Spark Layer est une méthodologie et un ensemble d'outils innovants dédiés à la transformation et à l'encodage du contenu web pour une compréhension optimale par l'Intelligence Artificielle. Notre objectif est de convertir les données web brutes, souvent non structurées (HTML, etc.), en un format standardisé et lisible par les machines, permettant aux IA d'extraire, d'analyser et d'utiliser l'information avec une efficacité et une précision inégalées.
+**An open protocol for structured, monetized, and trusted AI content consumption.**
 
-Que ce soit pour l'enrichissement de données, l'entraînement de modèles de langage (LLMs), la veille stratégique ou l'automatisation de tâches complexes, Spark Layer fournit une couche d'abstraction intelligente. Ce projet est au cœur d'une nouvelle approche pour optimiser la pipeline de traitement des données web, ouvrant la voie à des applications d'IA plus performantes et plus fiables.
+> *The next primary user of the web is not human — it is AI.*  
+> *SparkLayer is the protocol layer that makes this transition fair, structured, and economically viable.*
 
-Fonctionnalités Clés
-Crawling & Scraping Intelligents : Scripts Python robustes et configurables pour une collecte de données web ciblée et respectueuse.
+---
 
-Parsing Avancé : Conversion structurée du HTML et autres formats web en JSON propre et cohérent, optimisé pour l'ingestion par l'IA.
+## Author & Origin
 
-Normalisation des Données : Mécanismes pour standardiser les formats et les schémas, assurant une interprétation uniforme et sans ambiguïté par les modèles d'apprentissage automatique.
+**Romuald Martin**  
+Independent Researcher — Cabin Skolar, Bourgogne, France  
+romuald.martin@gmail.com
 
-Modularité et Flexibilité : Conçu avec une architecture modulaire en Python, facilitant l'intégration et l'extension.
+**Architecture first commit:** July 2025  
+**Protocol v2.0 implementation:** May 2026  
+**License:** MIT (see LICENSE)
 
-Conteneurisation (Docker) : Déploiement et gestion simplifiés du projet via Docker, garantissant un environnement d'exécution cohérent.
+This repository constitutes the original authorship record of the SparkLayer Protocol.  
+The initial architecture (pipeline diagram, white paper v1/v2) was committed in July 2025.  
+The complete v2.0 implementation (schemas, tooling, benchmark, EU submissions) was added in May 2026.
 
-Structure du Projet
-.
-├── scripts/
-│   ├── crawlers/           # Scripts Python pour la collecte de données web
-│   ├── parsers/            # Scripts Python pour la transformation HTML -> JSON
-│   └── utilities/          # Fonctions utilitaires partagées par les scripts
-├── data/
-│   ├── examples/           # Fichiers JSON illustrant les formats d'encodage de sortie
-│   └── tests/              # Fichiers JSON utilisés pour les tests unitaires et d'intégration
-├── config/
-│   └── config.example.json # Exemple de fichier de configuration (à dupliquer et adapter localement)
-├── docker/
-│   ├── Dockerfile          # Définition de l'image Docker du projet
-│   └── docker-compose.yml  # Configuration pour l'orchestration des services Docker
-├── snippets/
-│   └── js/                 # Petits extraits de code JavaScript ou démonstrations
-├── .gitignore              # Définit les fichiers et dossiers ignorés par Git
-├── LICENSE                 # Fichier de licence du projet (pour le "core" open source)
-└── README.md               # Ce fichier
-Technologies Utilisées
-Python : Langage principal pour tous les scripts de crawling, parsing et utilitaires.
+---
 
-JSON : Format de données privilégié pour l'encodage du contenu web et les échanges inter-modules.
+## What is SparkLayer?
 
-Docker : Pour la conteneurisation, garantissant portabilité et reproductibilité de l'environnement.
+SparkLayer defines a machine-native parallel layer to the human web. Three file formats  
+give autonomous AI agents everything they need to discover, verify, consume, and pay for  
+structured knowledge — without parsing HTML.
 
-JavaScript : Utilisé pour des snippets spécifiques ou des outils front-end légers si nécessaire.
+```
+.spsk  →  Site manifest (publisher identity + public keys)
+.spk   →  Signed knowledge document (depth-layered content graph)
+.spki  →  Action interface (declared intents + economic terms)
+```
 
-Installation et Démarrage
-Prérequis
-Assurez-vous d'avoir installé les outils suivants sur votre système :
+**The agent workflow:**
+```
+DISCOVER → VALIDATE → NEGOTIATE → CONSUME → ACT → SETTLE
+(fetch .spsk) (Ed25519) (depth/tokens) (read .spk) (.spki) (token bank)
+```
 
-Python 3.9+
+---
 
-Docker Desktop (ou Docker Engine)
+## Key Performance Numbers
 
-Git
+| Metric | HTML Scraping | SparkLayer | Δ |
+|---|---|---|---|
+| LLM calls to parse a document | 4 | **0** | −100% |
+| End-to-end processing time | 9,170ms | **262ms** | 35× faster |
+| Processing cost per document | $0.044 | **$0.000** | −100% |
+| Immediately actionable content | 30% | **100%** | +70pp |
+| Hallucination risk | 72% | **18%** | −54% |
+| Provenance coverage | 5% | **100%** | cryptographic |
+| Pipeline reliability | 12% | **93%** | +683pp |
 
-Étapes d'Installation
-Cloner le dépôt :
+---
 
-Bash
+## Repository Structure
 
-git clone https://github.com/YourUsername/spark-layer.git
-cd spark-layer
-Configuration des dépendances Python :
-Il est fortement recommandé d'utiliser un environnement virtuel.
+```
+SparkLayer/
+├── Config/
+│   ├── spsk.schema.json        JSON Schema — Site Key
+│   ├── spk.schema.json         JSON Schema — Knowledge Document
+│   └── spki.schema.json        JSON Schema — Knowledge Interface
+│
+├── Data/
+│   ├── examples/               Complete annotated examples (.spsk/.spk/.spki)
+│   └── benchmark/              Benchmark results (HTML vs .spk)
+│
+├── Scripts/
+│   ├── sparkifier.py           Publisher tool: HTML/MD → .spk files
+│   ├── sparklayer_skill.py     Agent skill (LangGraph / CrewAI / AutoGen)
+│   └── benchmark.py            Comparative benchmark
+│
+├── Docker/                     Vault server (coming)
+│
+└── Docs/
+    ├── Pipeline/               Architecture diagram (July 2025)
+    ├── WhitePaper/             Technical specification v2
+    ├── LandingPage/            sparkprotocol.io
+    └── Legal/                  Authorship, EU position paper, letters
+```
 
-Bash
+---
 
-python3 -m venv venv
-source venv/bin/activate  # Sur Windows, utilisez `venv\Scripts\activate`
-pip install -r requirements.txt # Assurez-vous d'avoir un fichier requirements.txt
-(Créez requirements.txt en utilisant pip freeze > requirements.txt après avoir installé vos dépendances).
+## Quick Start
 
-Gestion des configurations et secrets :
-Copiez le fichier d'exemple pour créer votre configuration locale :
+```bash
+# Sparkifier — convert your content to SparkLayer files
+pip install beautifulsoup4 markdown cryptography
+python Scripts/sparkifier.py \
+  --input article.md \
+  --domain yourdomain.com \
+  --output ./output
 
-Bash
+# Agent Skill — integrate into your agent framework
+pip install requests cryptography
+python Scripts/sparklayer_skill.py ./output
 
-cp config/config.example.json config/config.json
-Modifiez config/config.json avec vos propres valeurs (clés API, identifiants, etc.).
-⚠️ Assurez-vous que ce fichier config.json est bien listé dans votre .gitignore pour ne pas le committer accidentellement.
+# Benchmark — reproduce the results
+python Scripts/benchmark.py \
+  --spk-dir ./output \
+  --html article.html
+```
 
-Exécution avec Docker (Méthode recommandée) :
-Pour construire les images Docker et lancer les services :
+---
 
-Bash
+## Regulatory Alignment
 
-docker-compose build
-docker-compose up -d # Lancer en arrière-plan
-Pour arrêter les services Docker :
+SparkLayer directly implements:
 
-Bash
+| Regulation | Article | Coverage |
+|---|---|---|
+| EU AI Act | Art. 53(1)(c) | Machine-readable copyright compliance per content block |
+| EU AI Act | Art. 53(1)(d) | Cryptographically signed training data summaries |
+| EU AI Act | Art. 10 | Data quality flags, provenance chain, version control |
+| DSM Directive | Art. 4 | Machine-readable TDM reservation at block level |
 
-docker-compose down
-Utilisation
-(Cette section est à compléter avec des exemples concrets de commandes pour lancer vos scripts. Par exemple :)
+A formal position paper has been submitted to the EU AI Act GPAI Code of Practice consultation.  
+Formal letters sent to AI Office and DG CONNECT (May 2026).
 
-Exécuter un Crawler :
-Pour lancer un crawler sur une URL spécifique :
+---
 
-Bash
+## Standardisation Path
 
-python scripts/crawlers/my_generic_crawler.py --url "https://www.example.com/page-to-scrape" --output "data/crawled_output.html"
-Encoder une Page HTML :
-Pour transformer un fichier HTML brut en JSON encodé :
+1. **EU AI Act GPAI Code of Practice** — recognition as reference technical standard
+2. **W3C Community Group** — formal web standardisation submission
+3. **IETF** — `.well-known/spark.spsk` registration
 
-Bash
+---
 
-python scripts/parsers/html_to_json_parser.py --input "data/crawled_output.html" --output "data/encoded_page.json"
-Lancer les Tests :
-Bash
+## Citation
 
-python -m unittest discover tests/
-Licence
-Ce projet est sous licence MIT License pour sa partie "open source core". Vous êtes libre d'utiliser, de modifier et de distribuer le code conformément aux termes de cette licence. Veuillez consulter le fichier LICENSE pour plus de détails.
+```bibtex
+@misc{martin2026sparklayer,
+  author    = {Martin, Romuald},
+  title     = {SparkLayer: An Agent-to-Agent Protocol for the AI-First Web Economy},
+  year      = {2026},
+  month     = {May},
+  publisher = {GitHub},
+  url       = {https://github.com/totalarico702/SparkLayer}
+}
+```
 
-Note : Les fonctionnalités avancées ou les services premium construits sur ce noyau pourront être soumis à une licence commerciale séparée.
+---
 
-Contact
-Pour toute question, suggestion ou si vous souhaitez en savoir plus sur les applications potentielles de Spark Layer, n'hésitez pas à me contacter directement.
+## License
+
+MIT License — Copyright (c) 2025-2026 Romuald Martin
+
+The SparkLayer **protocol specification** (schemas, file formats, compliance levels)  
+is additionally placed in the public domain under **CC0 1.0** to ensure maximum  
+adoption and prevent patent enclosure.
+
+---
+
+*"The next user of the web is not human. SparkLayer is the protocol they will use."*
