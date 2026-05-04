@@ -1,4 +1,4 @@
-# SparkLayer Protocol — White Paper V2
+# SeamLayer Protocol — White Paper V2
 ## An Agent-to-Agent Protocol for the AI-First Web Economy
 **Author:** Romuald Martin — Cabin Skolar  
 **Version:** 2.0 — Draft  
@@ -11,11 +11,11 @@
 
 The web was built for human eyes. HTML, CSS, JavaScript — every layer of the stack assumes a visual renderer and a human interpreter. As autonomous AI agents become primary consumers of web content, this assumption collapses. Agents do not need visual rendering. They need semantic precision, verifiable provenance, structured action surfaces, and economic negotiation primitives.
 
-SparkLayer is a protocol designed for this reality. It defines a machine-native parallel layer to the human web — not a replacement, but a dedicated surface where agents discover, negotiate, consume, and act upon structured knowledge under clear economic and cryptographic rules.
+SeamLayer is a protocol designed for this reality. It defines a machine-native parallel layer to the human web — not a replacement, but a dedicated surface where agents discover, negotiate, consume, and act upon structured knowledge under clear economic and cryptographic rules.
 
 Its primary consumer is not a human publisher. It is an autonomous agent — running inside Claude Code, OpenClaw, CrewAI, LangGraph, or the next generation of agentic frameworks — that needs to interact with web content without human intermediation.
 
-**SparkLayer is the HTTP of the agent economy.**
+**SeamLayer is the HTTP of the agent economy.**
 
 ---
 
@@ -37,8 +37,8 @@ Its primary consumer is not a human publisher. It is an autonomous agent — run
 11. Compliance Levels
 12. The HTML Bridge Layer (depth_0 output)
 13. Deployment Modes
-    - 13.1 SparkLayer Open (web public)
-    - 13.2 SparkLayer Lite (intranet / réseau de confiance)
+    - 13.1 SeamLayer Open (web public)
+    - 13.2 SeamLayer Lite (intranet / réseau de confiance)
 14. Performance Benchmarks & Investment Thesis
 15. Competitive Landscape
 16. Standardization Roadmap
@@ -87,7 +87,7 @@ As autonomous agents proliferate — writing code, managing workflows, conductin
 - **Unverifiable**: No cryptographic proof that content came from its claimed source
 - **Unactionable**: No standardized way to discover and invoke services
 
-SparkLayer fills this gap.
+SeamLayer fills this gap.
 
 ---
 
@@ -95,22 +95,22 @@ SparkLayer fills this gap.
 
 ### 2.1 Agents Are the Primary User
 
-Every design decision in SparkLayer optimizes for machine consumption, not human readability. Format density over verbosity. Semantic precision over natural language descriptions. Cryptographic verifiability over trust-by-convention.
+Every design decision in SeamLayer optimizes for machine consumption, not human readability. Format density over verbosity. Semantic precision over natural language descriptions. Cryptographic verifiability over trust-by-convention.
 
 This is not a compromise. It is a deliberate inversion of web standards priorities.
 
 ### 2.2 One Protocol, Two Deployment Modes
 
-SparkLayer does not bifurcate into a "simple" and "complex" version. It defines one protocol with two deployment profiles:
+SeamLayer does not bifurcate into a "simple" and "complex" version. It defines one protocol with two deployment profiles:
 
-- **SparkLayer Open**: Full stack — cryptographic signing, vault access, token bank, honeypot, compliance enforcement. For the public web where threat actors exist.
-- **SparkLayer Lite**: Protocol-identical, security-relaxed. For closed networks (intranets, enterprise ERP, internal knowledge bases) where the threat model is organizational, not cryptographic.
+- **SeamLayer Open**: Full stack — cryptographic signing, vault access, token bank, honeypot, compliance enforcement. For the public web where threat actors exist.
+- **SeamLayer Lite**: Protocol-identical, security-relaxed. For closed networks (intranets, enterprise ERP, internal knowledge bases) where the threat model is organizational, not cryptographic.
 
 Same file formats. Same agent skill. Same tooling. Different security configuration in `manifest.json`.
 
 ### 2.3 The HTML Layer is a Derivative, Not a Source
 
-Publishers do not write HTML and SparkLayer in parallel. They define their knowledge structure in `.spk` and their action surfaces in `.spki`. The Sparkifier toolchain derives two outputs:
+Publishers do not write HTML and SeamLayer in parallel. They define their knowledge structure in `.spk` and their action surfaces in `.spki`. The Sparkifier toolchain derives two outputs:
 - The `.spsk` manifest
 - The HTML page (with depth_0 content injected as auto-generated balises)
 
@@ -118,7 +118,7 @@ The human web becomes a rendering artifact of the agent web. Not the other way a
 
 ### 2.4 Economic Enforcement via Vault, Not via Good Faith
 
-A grammar that can be ignored will be ignored. SparkLayer's economic model is not declarative — it is architectural. Content beyond depth_0 is not annotated as "please pay." It is **not transmitted** without verified payment. The vault is the enforcement mechanism.
+A grammar that can be ignored will be ignored. SeamLayer's economic model is not declarative — it is architectural. Content beyond depth_0 is not annotated as "please pay." It is **not transmitted** without verified payment. The vault is the enforcement mechanism.
 
 ---
 
@@ -149,7 +149,7 @@ A grammar that can be ignored will be ignored. SparkLayer's economic model is no
 └─────────────────────────────────────────────────────────┘
 ```
 
-The agent never touches the HTML DOM. The HTML exists for human browsers. The SparkLayer stack exists for agents.
+The agent never touches the HTML DOM. The HTML exists for human browsers. The SeamLayer stack exists for agents.
 
 ---
 
@@ -163,7 +163,7 @@ The `.spsk` is the public, unsigned entry point. Served at `/.well-known/spark.s
 
 ```json
 {
-  "@context": "https://sparkprotocol.io/context/spsk-v1.jsonld",
+  "@context": "https://seamlayer.com/context/spsk-v1.jsonld",
   "@id": "spark:site:example.com",
   "@type": "SparkSiteKey",
   "name": "Example Publisher",
@@ -199,7 +199,7 @@ The `.spsk` is the public, unsigned entry point. Served at `/.well-known/spark.s
   "compliance_required": "level_2",
   "honeypot_enabled": true,
   "vault_endpoint": "https://vault.example.com/spark/v2",
-  "token_bank_endpoint": "https://tokenbank.sparkprotocol.io/v2",
+  "token_bank_endpoint": "https://tokenbank.seamlayer.com/v2",
   "last_updated": "2026-05-01T00:00:00Z"
 }
 ```
@@ -222,7 +222,7 @@ The `.spk` is the semantic knowledge representation of a content resource. It is
 {
   "@context": [
     "https://schema.org/",
-    "https://sparkprotocol.io/context/spk-v2.jsonld"
+    "https://seamlayer.com/context/spk-v2.jsonld"
   ],
   "@id": "spark:article:example.com/tech/ai-protocols-2026",
   "@type": "Article",
@@ -344,7 +344,7 @@ The `.spki` describes the **action surface** of a publisher — what operations 
 
 ```json
 {
-  "@context": "https://sparkprotocol.io/context/spki-v2.jsonld",
+  "@context": "https://seamlayer.com/context/spki-v2.jsonld",
   "@id": "spark:interface:example.com",
   "@type": "SparkInterface",
   "publisher": { "@id": "spark:org:example-media" },
@@ -497,7 +497,7 @@ depth_N  →  Publisher-defined (up to max_depth_spark in .spsk)
 
 ### 6.1 Threat Model
 
-The primary threats SparkLayer addresses:
+The primary threats SeamLayer addresses:
 
 **T1 — Content Substitution**: A malicious actor serves a modified `.spk` or `.spki` to redirect agent behavior (e.g., substituting a competitor's content with altered data, or injecting malicious action endpoints).
 
@@ -563,13 +563,13 @@ Agent                          Vault Server
 
 **Key properties:**
 - Challenge-response prevents replay attacks
-- Agent signs with its own private key (agents have identity in SparkLayer)
+- Agent signs with its own private key (agents have identity in SeamLayer)
 - Payment proof is verified before content delivery (not after)
 - `content_url_signed` is a time-limited signed URL — it cannot be shared or reused
 
 ### 6.4 Agent Identity
 
-Agents in SparkLayer have cryptographic identities. A `spark:agent:` identifier is associated with:
+Agents in SeamLayer have cryptographic identities. A `spark:agent:` identifier is associated with:
 - An Ed25519 public key
 - A token bank wallet address
 - A compliance level certification
@@ -597,7 +597,7 @@ Non-compliant Level 0 crawlers that bypass the vault and scrape content directly
 ### 7.2 Implementation
 
 ```
-SparkLayer.honeypot = {
+SeamLayer.honeypot = {
   trigger_conditions: [
     "missing_agent_id",
     "invalid_signature_on_request",
@@ -621,7 +621,7 @@ Honeypot content carries explicit metadata declaring it as `spark:ContentType:Ab
 
 ### 8.1 Architecture
 
-The SparkLayer Token Bank is a centralized clearing infrastructure that manages economic exchange between agent wallets and publisher vaults. It is explicitly **not a blockchain** — it is a fiat-backed credit system analogous to pre-paid API credits.
+The SeamLayer Token Bank is a centralized clearing infrastructure that manages economic exchange between agent wallets and publisher vaults. It is explicitly **not a blockchain** — it is a fiat-backed credit system analogous to pre-paid API credits.
 
 ```
 Real Money Flow:
@@ -631,9 +631,9 @@ Real Money Flow:
     → distributed to agent sub-wallets as needed
 
 Transaction Flow:
-  Agent wallet → SparkLayer Token Bank → Publisher vault
+  Agent wallet → SeamLayer Token Bank → Publisher vault
   (debit)                               (credit 85%)
-                                        (SparkLayer fee 15%)
+                                        (SeamLayer fee 15%)
 
 Settlement:
   Publisher → withdraws accumulated token balance
@@ -645,7 +645,7 @@ Settlement:
 
 - **1 SparkToken = €0.01** (fixed rate, not market-driven)
 - **Publisher receives 85%** of token cost per access
-- **SparkLayer takes 15%** as clearing fee
+- **SeamLayer takes 15%** as clearing fee
 - **Minimum purchase**: 1000 tokens (€10)
 - **Minimum publisher withdrawal**: 500 tokens (€4.25)
 
@@ -658,7 +658,7 @@ Publishers set token costs per depth level. Over time, the Token Bank will expos
 
 ### 8.4 Agent Budget Management
 
-Agents operate with a token budget. SparkLayer-aware agent frameworks implement:
+Agents operate with a token budget. SeamLayer-aware agent frameworks implement:
 
 ```python
 class SparkAgent:
@@ -747,21 +747,21 @@ Each is explicitly declared.
 
 ## 10. Agent Skill Specification
 
-SparkLayer is implemented as a **skill** in agent frameworks. A skill is a self-contained capability module that agents can invoke. The SparkLayer skill encapsulates the complete protocol interaction.
+SeamLayer is implemented as a **skill** in agent frameworks. A skill is a self-contained capability module that agents can invoke. The SeamLayer skill encapsulates the complete protocol interaction.
 
 ### 10.1 Skill Interface
 
 ```python
-class SparkLayerSkill:
+class SeamLayerSkill:
     """
-    SparkLayer Protocol v2 — Agent Skill
+    SeamLayer Protocol v2 — Agent Skill
     Compatible with: Claude Code, OpenClaw, CrewAI, LangGraph, AutoGen
     """
 
     def discover(self, domain: str) -> SparkSiteKey | None:
         """
         Fetch and validate .spsk from domain.
-        Returns None if domain is not SparkLayer-enabled.
+        Returns None if domain is not SeamLayer-enabled.
         Falls back to direct HTML access if honeypot risk acceptable.
         """
 
@@ -794,21 +794,21 @@ class SparkLayerSkill:
 
 **Claude Code integration:**
 ```python
-# When generating a web project, Claude Code auto-generates SparkLayer files
-sparklayer = SparkLayerSkill(wallet=project_wallet)
-sparklayer.generate_spsk(site_config)
-sparklayer.generate_spk_for_content(content_tree, depth_config)
-sparklayer.generate_spki_for_api(api_spec)
+# When generating a web project, Claude Code auto-generates SeamLayer files
+seamlayer = SeamLayerSkill(wallet=project_wallet)
+seamlayer.generate_spsk(site_config)
+seamlayer.generate_spk_for_content(content_tree, depth_config)
+seamlayer.generate_spki_for_api(api_spec)
 ```
 
 **Research agent integration:**
 ```python
-# Agent researching a topic uses SparkLayer for structured data access
+# Agent researching a topic uses SeamLayer for structured data access
 for domain in candidate_sources:
-    if site_key := sparklayer.discover(domain):
-        assessment = sparklayer.assess(site_key, topic_query)
+    if site_key := seamlayer.discover(domain):
+        assessment = seamlayer.assess(site_key, topic_query)
         if assessment.value_score > THRESHOLD:
-            content = sparklayer.consume(assessment.best_content_id,
+            content = seamlayer.consume(assessment.best_content_id,
                                           depth=assessment.recommended_depth,
                                           wallet=self.wallet)
             knowledge_graph.ingest(content)
@@ -825,7 +825,7 @@ Compliance levels define agent behavior tiers. Publishers set minimum required l
 
 ```
 Level 0 — Non-Compliant
-  Behavior:  Ignores SparkLayer entirely, scrapes HTML
+  Behavior:  Ignores SeamLayer entirely, scrapes HTML
   Access:    depth_0 only (HTML balises)
   Receives:  Honeypot data if vault-bypass detected
   Risk:      Legal (license violation), technical (model degradation)
@@ -846,14 +846,14 @@ Level 3 — Ethical Compliance
   Behavior:  Level 2 + respects usage restrictions (train/finetune/display)
   Access:    All depth levels including research-only content
   Provides:  Attribution in model outputs, transparency reports
-  Certification: Third-party verified (SparkLayer Compliance Registry)
+  Certification: Third-party verified (SeamLayer Compliance Registry)
 ```
 
 ---
 
 ## 12. The HTML Bridge Layer (depth_0 output)
 
-The HTML layer is **derived from the SparkLayer stack**, not authored in parallel.
+The HTML layer is **derived from the SeamLayer stack**, not authored in parallel.
 
 The Sparkifier generates HTML balises from depth_0 content:
 
@@ -885,7 +885,7 @@ The Sparkifier generates HTML balises from depth_0 content:
 
   <!-- CTA for human readers -->
   <a href="/.well-known/spark.spsk" data-spark-discovery="true">
-    [AI Agent? Access full structured data via SparkLayer]
+    [AI Agent? Access full structured data via SeamLayer]
   </a>
 
 </article>
@@ -895,28 +895,28 @@ The Sparkifier generates HTML balises from depth_0 content:
 - Publisher never writes balises manually (generated)
 - Balises are surface-only depth_0 — no exploitable content in HTML
 - `data-spark-*` attributes are discovery hints for agents that encounter HTML
-- Human readers see clean HTML; agents see the discovery pointer and switch to SparkLayer
+- Human readers see clean HTML; agents see the discovery pointer and switch to SeamLayer
 
 ---
 
 ## 13. Deployment Modes
 
-### 13.1 SparkLayer Open (Web Public)
+### 13.1 SeamLayer Open (Web Public)
 
 Full protocol stack. Mandatory for public web deployment where threat actors exist.
 
 **Components required:**
 - Sparkifier (content → .spk/.spki/.spsk generator)
 - Vault Server (depth-gated content delivery)
-- Token Bank integration (SparkLayer hosted or self-hosted enterprise)
+- Token Bank integration (SeamLayer hosted or self-hosted enterprise)
 - Ed25519 signing pipeline
 - Honeypot generator
 
 **Deployment options:**
-- **SparkLayer Cloud SaaS**: Hosted vault + token bank. Publisher integrates via CMS plugin.
+- **SeamLayer Cloud SaaS**: Hosted vault + token bank. Publisher integrates via CMS plugin.
 - **Self-hosted Docker**: Full stack in containers. For publishers requiring data sovereignty.
 
-### 13.2 SparkLayer Lite (Intranet / Réseau de Confiance)
+### 13.2 SeamLayer Lite (Intranet / Réseau de Confiance)
 
 Same file formats, same agent skill, relaxed security profile.
 
@@ -939,7 +939,7 @@ Same file formats, same agent skill, relaxed security profile.
 - Healthcare / Legal document systems with AI access
 
 **Value proposition for enterprise:**
-An agent navigating an SAP instance annotated with SparkLayer Lite reduces task completion time by eliminating DOM inference. The same agent skill used externally works internally — no retraining, no adaptation.
+An agent navigating an SAP instance annotated with SeamLayer Lite reduces task completion time by eliminating DOM inference. The same agent skill used externally works internally — no retraining, no adaptation.
 
 ---
 
@@ -961,7 +961,7 @@ These metrics are the basis for the investment thesis. Benchmark methodology is 
 
 **Hallucination Reduction (preliminary):**
 - Training on HTML-scraped data: baseline hallucination rate
-- Training on SparkLayer `.spk` data: estimated 15–30% reduction (hypothesis; requires formal benchmark)
+- Training on SeamLayer `.spk` data: estimated 15–30% reduction (hypothesis; requires formal benchmark)
 - Mechanism: explicit entity disambiguation, provenance chain, version-controlled facts
 
 **Preprocessing Cost:**
@@ -969,7 +969,7 @@ These metrics are the basis for the investment thesis. Benchmark methodology is 
 - `.spk` → training-ready: 1 step (schema validation)
 - Cost reduction: estimated 60–80% preprocessing infrastructure savings
 
-### 14.2 Revenue Model for SparkLayer Inc.
+### 14.2 Revenue Model for SeamLayer Inc.
 
 ```
 Take rate model (Stripe for AI content):
@@ -1001,10 +1001,10 @@ Take rate model (Stripe for AI content):
 | llms.txt | Minimal | None | None | Partial | None |
 | OpenAPI | API-only | Auth schemes | None | Partial | None |
 | Cloudflare AI Audit | None | Network-level | None | No | None |
-| **SparkLayer** | **Full** | **Depth + Vault** | **Token Bank** | **Yes** | **Signed** |
+| **SeamLayer** | **Full** | **Depth + Vault** | **Token Bank** | **Yes** | **Signed** |
 
 **Key differentiation from llms.txt** (closest simple competitor):
-llms.txt is a plain text file that tells LLMs what content exists. It has no access control, no monetization, no cryptographic verification, no action surfaces, and no depth model. It is to SparkLayer what `favicon.txt` is to a full web application.
+llms.txt is a plain text file that tells LLMs what content exists. It has no access control, no monetization, no cryptographic verification, no action surfaces, and no depth model. It is to SeamLayer what `favicon.txt` is to a full web application.
 
 **Key differentiation from OpenAPI:**
 OpenAPI documents APIs for human developers. `.spki` defines action surfaces for autonomous agents making runtime decisions. Different reader, different format optimization, different economic model.
@@ -1017,11 +1017,11 @@ OpenAPI documents APIs for human developers. `.spki` defines action surfaces for
 - Finalize v2.0 spec (this document)
 - Open-source Sparkifier
 - Open-source reference vault server (Docker)
-- Open-source SparkLayer skill (Python, TypeScript)
+- Open-source SeamLayer skill (Python, TypeScript)
 - First 3 pilot publishers
 
 ### Phase 2: Ecosystem (Months 6-18)
-- SparkLayer Cloud SaaS (hosted vault + token bank)
+- SeamLayer Cloud SaaS (hosted vault + token bank)
 - WordPress/Ghost/Webflow plugins
 - Integration with one major agent framework (LangGraph or CrewAI)
 - 50 publishers, 5 AI company integrations
@@ -1029,7 +1029,7 @@ OpenAPI documents APIs for human developers. `.spki` defines action surfaces for
 
 ### Phase 3: Standard (Months 18-36)
 - W3C Candidate Recommendation
-- Enterprise SparkLayer Lite (self-hosted)
+- Enterprise SeamLayer Lite (self-hosted)
 - Compliance certification program
 - Token Bank API opened to third-party vault operators
 
@@ -1052,7 +1052,7 @@ Sufficiently sophisticated scrapers will eventually fingerprint honeypot respons
 Level 3 compliance requires attribution in model outputs. How is this technically implemented? Is it metadata in the inference output? In-context citation? Model training signal?
 
 **Q5 — Multi-Agent Content Negotiation**
-When a multi-agent pipeline (Agent A calls Agent B which calls Agent C) accesses SparkLayer content, who is accountable for compliance? How is the token cost attributed across the chain?
+When a multi-agent pipeline (Agent A calls Agent B which calls Agent C) accesses SeamLayer content, who is accountable for compliance? How is the token cost attributed across the chain?
 
 **Q6 — Offline / Edge Agent Access**
 An agent operating offline (cached content, edge deployment) cannot perform vault handshake in real-time. What caching semantics are appropriate? How long is a vault access token valid?
@@ -1123,9 +1123,9 @@ paid_subscription   →  Active subscription in Token Bank
 vault_only          →  Vault handshake mandatory regardless of subscription
 ```
 
-### A.4 SparkLayer HTTP Headers
+### A.4 SeamLayer HTTP Headers
 
-Agents MUST include these headers on all SparkLayer requests:
+Agents MUST include these headers on all SeamLayer requests:
 
 ```
 X-Spark-Agent-ID: spark:agent:<identifier>
@@ -1134,7 +1134,7 @@ X-Spark-Protocol-Version: 2.0
 X-Spark-Wallet: <wallet_address>
 ```
 
-Publishers MUST include these headers on all SparkLayer responses:
+Publishers MUST include these headers on all SeamLayer responses:
 
 ```
 X-Spark-Content-ID: spark:article:<identifier>
@@ -1145,7 +1145,7 @@ X-Spark-Receipt-ID: <transaction_id>
 
 ---
 
-*SparkLayer Protocol v2.0 — Discussion Draft*  
+*SeamLayer Protocol v2.0 — Discussion Draft*  
 *Romuald Martin — Cabin Skolar — May 2026*  
 *Not an official W3C Recommendation*  
 *Feedback: romuald.martin@gmail.com*

@@ -1,4 +1,4 @@
-# SparkLayer Protocol — Authorship Declaration
+# SeamLayer Protocol — Authorship Declaration
 
 ## Primary Author
 
@@ -12,10 +12,10 @@ GitHub: github.com/totalarico702
 
 ## Declaration
 
-I, Romuald Martin, hereby declare that I am the sole original author of the SparkLayer  
+I, Romuald Martin, hereby declare that I am the sole original author of the SeamLayer  
 Protocol specification, as documented in this repository.
 
-The original conception of SparkLayer — including the three-file architecture (.spsk/.spk/.spki),  
+The original conception of SeamLayer — including the three-file architecture (.spsk/.spk/.spki),  
 the depth-based monetization model, the vault access control mechanism, the cryptographic  
 provenance framework, the token bank economic model, the Semantic Honeypot (Abysse Data),  
 the agent compliance levels, the intent taxonomy, and the regulatory alignment with the  
@@ -29,11 +29,11 @@ EU AI Act — was developed by me between July 2025 and May 2026.
 |---|---|---|
 | July 2025 | Initial architecture — pipeline diagram | `Docs/Pipeline/diagram-export-29-07-2025-12_27_38.png` |
 | July 2025 | White paper v1 (French) | `Docs/WhitePaper/White paper_V2.pdf` |
-| September 2025 | White paper v1 English — W3C submission draft | `Docs/WhitePaper/sparklayer_v2.pdf` |
-| May 2026 | Protocol v2.0 — complete technical specification | `Docs/WhitePaper/sparklayer_whitepaper_v2.md` |
+| September 2025 | White paper v1 English — W3C submission draft | `Docs/WhitePaper/seamlayer_v2.pdf` |
+| May 2026 | Protocol v2.0 — complete technical specification | `Docs/WhitePaper/seamlayer_whitepaper_v2.md` |
 | May 2026 | JSON Schemas finalized (.spsk / .spk / .spki) | `Config/` |
 | May 2026 | Sparkifier v0.1 — publisher tooling | `Scripts/sparkifier.py` |
-| May 2026 | Agent Skill v0.1 — LangGraph/CrewAI integration | `Scripts/sparklayer_skill.py` |
+| May 2026 | Agent Skill v0.1 — LangGraph/CrewAI integration | `Scripts/seamlayer_skill.py` |
 | May 2026 | Benchmark v0.2 — HTML vs .spk analysis | `Scripts/benchmark.py` |
 | May 2026 | Position paper — EU AI Act GPAI Code of Practice | `Docs/Legal/` |
 | May 2026 | Formal letters to AI Office and DG CONNECT | `Docs/Legal/` |
@@ -49,7 +49,7 @@ Git commit (SHA: 8c80d0a2d236543daf6d5dab4643d561258f8930) and subsequent commit
    document, and action interface as three distinct cryptographically signed files
 
 2. **The Sparkification process** — automated pipeline from raw content to structured  
-   SparkLayer files (visible in July 2025 pipeline diagram as "Sparkification" node)
+   SeamLayer files (visible in July 2025 pipeline diagram as "Sparkification" node)
 
 3. **The depth model** — hierarchical content partitioning with independent access  
    levels and token costs per depth layer
@@ -79,10 +79,10 @@ Git commit (SHA: 8c80d0a2d236543daf6d5dab4643d561258f8930) and subsequent commit
 11. **Compliance level framework** — four-tier crawler compliance model  
     (Level 0→3) with economic and legal enforcement mechanisms
 
-12. **EU AI Act alignment** — mapping of SparkLayer to Art. 10 and Art. 53  
+12. **EU AI Act alignment** — mapping of SeamLayer to Art. 10 and Art. 53  
     of Regulation EU 2024/1689
 
-13. **SparkLayer Lite** — same protocol, trust-relaxed deployment mode  
+13. **SeamLayer Lite** — same protocol, trust-relaxed deployment mode  
     for intranet and enterprise environments
 
 ---
@@ -107,7 +107,7 @@ independent of any subsequent claims.
   platform at export time, constituting an independent third-party timestamp.
 
 - **PDF documents** in `Docs/WhitePaper/` — dated 2025, containing the complete  
-  conceptual specification of SparkLayer before any code implementation.
+  conceptual specification of SeamLayer before any code implementation.
 
 ---
 
@@ -128,5 +128,5 @@ github.com/totalarico702
 
 ---
 
-*This document is part of the SparkLayer repository and is included for authorship  
+*This document is part of the SeamLayer repository and is included for authorship  
 provenance purposes. Last updated: May 2026.*

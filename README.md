@@ -1,9 +1,9 @@
-# SparkLayer Protocol
+# SeamLayer Protocol
 
 **An open protocol for structured, monetized, and trusted AI content consumption.**
 
 > *The next primary user of the web is not human — it is AI.*  
-> *SparkLayer is the protocol layer that makes this transition fair, structured, and economically viable.*
+> *SeamLayer is the protocol layer that makes this transition fair, structured, and economically viable.*
 
 ---
 
@@ -17,15 +17,15 @@ romuald.martin@gmail.com
 **Protocol v2.0 implementation:** May 2026  
 **License:** MIT (see LICENSE)
 
-This repository constitutes the original authorship record of the SparkLayer Protocol.  
+This repository constitutes the original authorship record of the SeamLayer Protocol.  
 The initial architecture (pipeline diagram, white paper v1/v2) was committed in July 2025.  
 The complete v2.0 implementation (schemas, tooling, benchmark, EU submissions) was added in May 2026.
 
 ---
 
-## What is SparkLayer?
+## What is SeamLayer?
 
-SparkLayer defines a machine-native parallel layer to the human web. Three file formats  
+SeamLayer defines a machine-native parallel layer to the human web. Three file formats  
 give autonomous AI agents everything they need to discover, verify, consume, and pay for  
 structured knowledge — without parsing HTML.
 
@@ -45,7 +45,7 @@ DISCOVER → VALIDATE → NEGOTIATE → CONSUME → ACT → SETTLE
 
 ## Key Performance Numbers
 
-| Metric | HTML Scraping | SparkLayer | Δ |
+| Metric | HTML Scraping | SeamLayer | Δ |
 |---|---|---|---|
 | LLM calls to parse a document | 4 | **0** | −100% |
 | End-to-end processing time | 9,170ms | **262ms** | 35× faster |
@@ -60,7 +60,7 @@ DISCOVER → VALIDATE → NEGOTIATE → CONSUME → ACT → SETTLE
 ## Repository Structure
 
 ```
-SparkLayer/
+SeamLayer/
 ├── Config/
 │   ├── spsk.schema.json        JSON Schema — Site Key
 │   ├── spk.schema.json         JSON Schema — Knowledge Document
@@ -72,7 +72,7 @@ SparkLayer/
 │
 ├── Scripts/
 │   ├── sparkifier.py           Publisher tool: HTML/MD → .spk files
-│   ├── sparklayer_skill.py     Agent skill (LangGraph / CrewAI / AutoGen)
+│   ├── seamlayer_skill.py     Agent skill (LangGraph / CrewAI / AutoGen)
 │   └── benchmark.py            Comparative benchmark
 │
 ├── Docker/                     Vault server (coming)
@@ -89,7 +89,7 @@ SparkLayer/
 ## Quick Start
 
 ```bash
-# Sparkifier — convert your content to SparkLayer files
+# Sparkifier — convert your content to SeamLayer files
 pip install beautifulsoup4 markdown cryptography
 python Scripts/sparkifier.py \
   --input article.md \
@@ -98,7 +98,7 @@ python Scripts/sparkifier.py \
 
 # Agent Skill — integrate into your agent framework
 pip install requests cryptography
-python Scripts/sparklayer_skill.py ./output
+python Scripts/seamlayer_skill.py ./output
 
 # Benchmark — reproduce the results
 python Scripts/benchmark.py \
@@ -110,7 +110,7 @@ python Scripts/benchmark.py \
 
 ## Regulatory Alignment
 
-SparkLayer directly implements:
+SeamLayer directly implements:
 
 | Regulation | Article | Coverage |
 |---|---|---|
@@ -135,13 +135,13 @@ Formal letters sent to AI Office and DG CONNECT (May 2026).
 ## Citation
 
 ```bibtex
-@misc{martin2026sparklayer,
+@misc{martin2026seamlayer,
   author    = {Martin, Romuald},
-  title     = {SparkLayer: An Agent-to-Agent Protocol for the AI-First Web Economy},
+  title     = {SeamLayer: An Agent-to-Agent Protocol for the AI-First Web Economy},
   year      = {2026},
   month     = {May},
   publisher = {GitHub},
-  url       = {https://github.com/totalarico702/SparkLayer}
+  url       = {https://github.com/totalarico702/SeamLayer}
 }
 ```
 
@@ -151,10 +151,10 @@ Formal letters sent to AI Office and DG CONNECT (May 2026).
 
 MIT License — Copyright (c) 2025-2026 Romuald Martin
 
-The SparkLayer **protocol specification** (schemas, file formats, compliance levels)  
+The SeamLayer **protocol specification** (schemas, file formats, compliance levels)  
 is additionally placed in the public domain under **CC0 1.0** to ensure maximum  
 adoption and prevent patent enclosure.
 
 ---
 
-*"The next user of the web is not human. SparkLayer is the protocol they will use."*
+*"The next user of the web is not human. SeamLayer is the protocol they will use."*
